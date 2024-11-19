@@ -1,7 +1,8 @@
 package mobileapplications.workoutbuilder.domain;
 
 import jakarta.persistence.*;
-import java.time.DayOfWeek;
+import mobileapplications.workoutbuilder.enums.DayOfWeek;
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
