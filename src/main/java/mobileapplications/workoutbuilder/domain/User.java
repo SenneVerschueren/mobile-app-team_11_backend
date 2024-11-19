@@ -3,6 +3,8 @@ package mobileapplications.workoutbuilder.domain;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,10 +32,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-        // One user can have multiple workouts
+    // One user can have multiple workouts
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Workout> workouts;
+
+    // BCrypt Password Encoder
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // Constructors
     public User() {}
@@ -41,7 +46,7 @@ public class User {
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        setPassword(password); // Automatically hash the password when setting it
     }
 
     // Getters and Setters
@@ -73,8 +78,9 @@ public class User {
         return password;
     }
 
+    // Hash the password before setting it
     public void setPassword(String password) {
-        this.password = password;
+        this.password = passwordEncoder.encode(password); // Encrypt the password using BCrypt
     }
 
     public List<Workout> getWorkouts() {
