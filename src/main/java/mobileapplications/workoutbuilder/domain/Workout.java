@@ -1,12 +1,12 @@
 package mobileapplications.workoutbuilder.domain;
 
 import jakarta.persistence.*;
-import mobileapplications.workoutbuilder.enums.DayOfWeek;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "workouts")
@@ -23,10 +23,13 @@ public class Workout {
     @Column(nullable = false)
     private String name;
 
-    private List<DayOfWeek> daysOfWeek;
-
     @Column(nullable = false)
     private int rest;
+
+    // One workout can have multiple exercises
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Exercise> exercises;
 
     // Getters and setters
     public Long getId() {
@@ -53,19 +56,24 @@ public class Workout {
         this.name = name;
     }
 
-    public List<DayOfWeek> getDaysOfWeek() {
-        return daysOfWeek;
-    }
-
-    public void setDaysOfWeek(List<DayOfWeek> daysOfWeek) {
-        this.daysOfWeek = daysOfWeek;
-    }
-
     public int getRest() {
         return rest;
     }
 
     public void setRest(int rest) {
         this.rest = rest;
+    }
+
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public void addExercise(Exercise exercise) {
+        exercises.add(exercise);
+        exercise.setWorkout(this);
     }
 }
