@@ -4,6 +4,7 @@ import mobileapplications.workoutbuilder.domain.User;
 import mobileapplications.workoutbuilder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,16 +16,12 @@ public class UserController {
 
     private final UserService userService;
 
+    private final BCryptPasswordEncoder bcryptPasswordEncoder;
+
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    // Create a new user
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user.getName(), user.getEmail(), user.getPassword());
-        return ResponseEntity.ok(createdUser);
+        this.bcryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
     // Get all users

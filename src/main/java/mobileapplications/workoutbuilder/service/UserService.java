@@ -20,6 +20,12 @@ public class UserService {
 
     // Create a new user
     public User createUser(String name, String email, String password) {
+        User existingUser = userRepository.findByEmail(email);
+
+        if (existingUser != null) {
+            throw new IllegalArgumentException("Email is already in use");
+        }
+
         User newUser = new User(name, email, password);
         return userRepository.save(newUser);
     }

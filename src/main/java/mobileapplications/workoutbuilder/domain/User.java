@@ -1,8 +1,13 @@
 package mobileapplications.workoutbuilder.domain;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -37,8 +42,9 @@ public class User {
     @JsonManagedReference
     private List<Workout> workouts;
 
-    // BCrypt Password Encoder
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
 
     // Constructors
     public User() {}
@@ -46,7 +52,7 @@ public class User {
     public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
-        setPassword(password); // Automatically hash the password when setting it
+        this.password = password;
     }
 
     // Getters and Setters
@@ -78,9 +84,8 @@ public class User {
         return password;
     }
 
-    // Hash the password before setting it
     public void setPassword(String password) {
-        this.password = passwordEncoder.encode(password); // Encrypt the password using BCrypt
+        this.password = password;
     }
 
     public List<Workout> getWorkouts() {
