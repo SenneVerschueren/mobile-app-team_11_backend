@@ -1,6 +1,7 @@
 package mobileapplications.workoutbuilder.controller;
 
 import mobileapplications.workoutbuilder.domain.User;
+import mobileapplications.workoutbuilder.exception.AuthServiceException;
 import mobileapplications.workoutbuilder.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +14,13 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             String token = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
             return ResponseEntity.ok(new AuthResponse(token));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (AuthServiceException e) {
+            throw new AuthServiceException(e.getMessage());
         }
     }
 
@@ -29,8 +29,8 @@ public class AuthController {
         try {
             User user = authService.register(registerRequest.getName(), registerRequest.getEmail(), registerRequest.getPassword());
             return ResponseEntity.ok(user);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (AuthServiceException e) {
+            throw new AuthServiceException(e.getMessage());
         }
     }
 
