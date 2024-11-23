@@ -3,6 +3,8 @@ package mobileapplications.workoutbuilder.controller;
 import mobileapplications.workoutbuilder.domain.User;
 import mobileapplications.workoutbuilder.exception.AuthServiceException;
 import mobileapplications.workoutbuilder.service.AuthService;
+import mobileapplications.workoutbuilder.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +16,16 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public AuthResponse login(@RequestBody LoginRequest loginRequest) {
         try {
             String token = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
-            return ResponseEntity.ok(new AuthResponse(token));
+            User user = userService.getUserByEmail(loginRequest.getEmail());
+            Long userId = user.getId();
+            return new AuthResponse(token, userId);
         } catch (AuthServiceException e) {
             throw new AuthServiceException(e.getMessage());
         }
@@ -90,9 +97,11 @@ public class AuthController {
 
     public static class AuthResponse {
         private String token;
+        private Long userId;
 
-        public AuthResponse(String token) {
+        public AuthResponse(String token, Long userId) {
             this.token = token;
+            this.userId = userId;
         }
 
         public String getToken() {
@@ -101,6 +110,14 @@ public class AuthController {
 
         public void setToken(String token) {
             this.token = token;
+        }
+
+        public Long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(Long userId) {
+            this.userId = userId;
         }
     }
 }

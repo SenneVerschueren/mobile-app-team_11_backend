@@ -1,27 +1,26 @@
 package mobileapplications.workoutbuilder.controller;
 
 import mobileapplications.workoutbuilder.domain.User;
+import mobileapplications.workoutbuilder.domain.Workout;
+import mobileapplications.workoutbuilder.exception.AuthServiceException;
+import mobileapplications.workoutbuilder.exception.UserServiceException;
 import mobileapplications.workoutbuilder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:8081")
 public class UserController {
 
     private final UserService userService;
 
-    private final BCryptPasswordEncoder bcryptPasswordEncoder;
-
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
-        this.bcryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
     // Get all users
@@ -32,21 +31,19 @@ public class UserController {
 
     // Get user by ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public User getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return user;
     }
 
-    // Update user details
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = userService.updateUser(id, user.getName(), user.getEmail(), user.getPassword());
-        return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
-    }
-
-    // Delete user
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        return userService.deleteUser(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    // get all workouts for a user
+    @GetMapping("/{id}/workouts")
+    public List<Workout> getUserWorkouts(@PathVariable Long id) {
+        try {
+            List<Workout> workouts = userService.getAllWorkoutsForUser(id);
+            return workouts;
+        } catch (UserServiceException e) {
+            throw new UserServiceException(e.getMessage());
+        }
     }
 }
