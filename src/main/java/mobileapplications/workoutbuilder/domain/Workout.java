@@ -31,6 +31,14 @@ public class Workout {
     @JsonManagedReference
     private List<Exercise> exercises;
 
+    public Workout() {
+    }
+
+    public Workout(String name) {
+        this.name = name;
+        this.rest = 60;  // Default rest time
+    }
+
     // Getters and setters
     public Long getId() {
         return id;

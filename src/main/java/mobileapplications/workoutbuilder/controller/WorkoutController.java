@@ -15,26 +15,20 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/workouts")
+@CrossOrigin(origins = "http://localhost:8081")
 public class WorkoutController {
 
-    private final WorkoutService workoutService;
-    private final UserRepository userRepository;
-
     @Autowired
-    public WorkoutController(WorkoutService workoutService, UserRepository userRepository) {
+    private final WorkoutService workoutService;
+
+    public WorkoutController(WorkoutService workoutService) {
         this.workoutService = workoutService;
-        this.userRepository = userRepository;
     }
 
     @PostMapping
-    public ResponseEntity<Workout> createWorkout(@RequestBody Workout workout, @RequestParam Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            workout.setUser(user.get());
-            Workout savedWorkout = workoutService.saveWorkout(workout);
-            return new ResponseEntity<>(savedWorkout, HttpStatus.CREATED);
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    public Workout createWorkout(@RequestBody Workout workoutIn, @RequestParam Long userId) {
+        Workout workout = workoutService.createWorkout(workoutIn.getName(), userId);
+        return workout;
     }
 
     @GetMapping

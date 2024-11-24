@@ -1,6 +1,8 @@
 package mobileapplications.workoutbuilder.service;
 
+import mobileapplications.workoutbuilder.domain.User;
 import mobileapplications.workoutbuilder.domain.Workout;
+import mobileapplications.workoutbuilder.exception.WorkoutServiceException;
 import mobileapplications.workoutbuilder.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,16 +13,31 @@ import java.util.Optional;
 @Service
 public class WorkoutService {
 
+    @Autowired
     private final WorkoutRepository workoutRepository;
 
     @Autowired
-    public WorkoutService(WorkoutRepository workoutRepository) {
+    private final UserService userService;
+
+    
+    public WorkoutService(WorkoutRepository workoutRepository, UserService userService) {
         this.workoutRepository = workoutRepository;
+        this.userService = userService;
     }
 
     // Create or update a workout
-    public Workout saveWorkout(Workout workout) {
-        return workoutRepository.save(workout);
+    public Workout createWorkout(String workoutName, Long userId) {
+        try {
+            User user = userService.getUserById(userId);
+            if (user == null) {
+                throw new WorkoutServiceException("User not found with id: " + userId);
+            }
+            Workout workout = new Workout(workoutName);
+            workout.setUser(user);
+            return workoutRepository.save(workout);
+        } catch (Exception e) {
+            throw new WorkoutServiceException(e.getMessage());
+        }
     }
 
     // Get all workouts
