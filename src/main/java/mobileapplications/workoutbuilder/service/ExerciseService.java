@@ -2,20 +2,23 @@ package mobileapplications.workoutbuilder.service;
 
 import mobileapplications.workoutbuilder.domain.Exercise;
 import mobileapplications.workoutbuilder.domain.Workout;
+import mobileapplications.workoutbuilder.exception.ExerciseServiceException;
 import mobileapplications.workoutbuilder.repository.ExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ExerciseService {
 
+    @Autowired
     private final ExerciseRepository exerciseRepository;
-    private final WorkoutService workoutService;
 
     @Autowired
+    private final WorkoutService workoutService;
+
+    
     public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService) {
         this.exerciseRepository = exerciseRepository;
         this.workoutService = workoutService;
@@ -25,21 +28,18 @@ public class ExerciseService {
         return exerciseRepository.findAll();
     }
 
-    public Optional<Exercise> getExerciseById(Long id) {
-        return exerciseRepository.findById(id);
+    public Exercise getExerciseById(Long id) {
+        return exerciseRepository.findById(id).orElse(null);
     }
 
     public Exercise createExercise(Exercise exercise, Long workoutId) {
-        Optional<Workout> workoutOptional = workoutService.getWorkoutById(workoutId);
-        if (workoutOptional.isPresent()) {
-            Workout workout = workoutOptional.get();
+        Workout workout = workoutService.getWorkoutById(workoutId).orElse(null);
+        if (workout != null) {
             exercise.setWorkout(workout);
-            workout.addExercise(exercise);
-            workoutService.saveWorkout(workout);
-            return workout.getExercises().get(workout.getExercises().size() - 1);
+            return exerciseRepository.save(exercise);
         } else {
             // handle the case where the workout is not found
-            throw new IllegalArgumentException("Workout not found with id: " + workoutId);
+            throw new ExerciseServiceException("Workout not found with id: " + workoutId);
         }
         
     }

@@ -1,5 +1,8 @@
 package mobileapplications.workoutbuilder.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import mobileapplications.workoutbuilder.enums.WorkoutType;
 
@@ -73,6 +77,10 @@ public class Exercise {
     @Column(nullable = false)
     private Number autoIncreaseCurrentDuration;
 
+    @OneToMany(mappedBy = "exercise")
+    private List<Set> sets;
+    
+
     // Constructors
     public Exercise() {}
 
@@ -93,6 +101,7 @@ public class Exercise {
         this.autoIncreaseCurrentSets = autoIncreaseCurrentSets;
         this.autoIncreaseCurrent_reps = autoIncreaseCurrent_reps;
         this.autoIncreaseCurrentDuration = autoIncreaseCurrentDuration;
+        this.sets = new ArrayList<>();
     }
 
     // Getters and Setters
@@ -238,6 +247,19 @@ public class Exercise {
 
     public void setWorkout(Workout workout) {
         this.workout = workout;
+    }
+
+    public List<Set> getSets() {
+        return sets;
+    }
+
+    public void setSets(List<Set> sets) {
+        this.sets = sets;
+    }
+
+    public void addSet(Set set) {
+        sets.add(set);
+        set.setExercise(this);
     }
 
 }
