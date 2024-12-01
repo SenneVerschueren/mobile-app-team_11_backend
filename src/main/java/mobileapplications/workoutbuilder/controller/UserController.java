@@ -2,11 +2,9 @@ package mobileapplications.workoutbuilder.controller;
 
 import mobileapplications.workoutbuilder.domain.User;
 import mobileapplications.workoutbuilder.domain.Workout;
-import mobileapplications.workoutbuilder.exception.AuthServiceException;
 import mobileapplications.workoutbuilder.exception.UserServiceException;
 import mobileapplications.workoutbuilder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

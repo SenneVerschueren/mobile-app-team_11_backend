@@ -2,9 +2,6 @@ package mobileapplications.workoutbuilder.controller;
 
 import mobileapplications.workoutbuilder.domain.Workout;
 import mobileapplications.workoutbuilder.service.WorkoutService;
-import mobileapplications.workoutbuilder.domain.Exercise;
-import mobileapplications.workoutbuilder.domain.User;
-import mobileapplications.workoutbuilder.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
