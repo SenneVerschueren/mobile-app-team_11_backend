@@ -13,10 +13,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/exercises")
 public class ExerciseController {
-
+    
+    @Autowired
     private final ExerciseService exerciseService;
 
-    @Autowired
     public ExerciseController(ExerciseService exerciseService) {
         this.exerciseService = exerciseService;
     }
