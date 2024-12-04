@@ -29,7 +29,12 @@ public class ExerciseService {
     }
 
     public Exercise getExerciseById(Long id) {
-        return exerciseRepository.findById(id).orElse(null);
+        Exercise exercise = exerciseRepository.findById(id).orElse(null);
+        if (exercise != null) {
+            return exercise;
+        } else {
+            throw new ExerciseServiceException("Exercise not found with id: " + id);
+        }
     }
 
     public Exercise createExercise(Exercise exercise, Long workoutId) {

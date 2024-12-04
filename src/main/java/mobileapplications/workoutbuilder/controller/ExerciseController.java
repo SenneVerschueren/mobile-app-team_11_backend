@@ -30,4 +30,10 @@ public class ExerciseController {
         Exercise createdExercise = exerciseService.createExercise(exercise, workoutId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdExercise);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Exercise> getExerciseById(@PathVariable Long id) {
+        Exercise exercise = exerciseService.getExerciseById(id);
+        return ResponseEntity.ok(exercise);
+    }
 }
