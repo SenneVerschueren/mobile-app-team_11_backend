@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sets")
+@CrossOrigin(origins = "*")
 public class SetController {
 
     @Autowired
