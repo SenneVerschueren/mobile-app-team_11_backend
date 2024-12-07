@@ -38,4 +38,13 @@ public class SetService {
 
         return setRepository.save(set);
     }
+
+    public Set updateSet(Long id, Set editedSet) {
+        Set set = getSetById(id);
+
+        set.updateValuesSet(editedSet.getReps(), editedSet.getWeight(), editedSet.getDuration(),
+                editedSet.getExercise());
+
+        return setRepository.save(set);
+    }
 }
