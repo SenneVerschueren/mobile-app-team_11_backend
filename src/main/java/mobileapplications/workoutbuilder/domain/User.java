@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,7 +47,8 @@ public class User {
     }
 
     // Constructors
-    public User() {}
+    public User() {
+    }
 
     public User(String name, String email, String password) {
         this.name = name;
@@ -94,5 +95,11 @@ public class User {
 
     public void setWorkouts(List<Workout> workouts) {
         this.workouts = workouts;
+    }
+
+    public void updateValuesUser(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 }
