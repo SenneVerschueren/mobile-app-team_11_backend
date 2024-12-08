@@ -49,6 +49,12 @@ public class ExerciseService {
         
     }
 
+    public Exercise createExerciseByName(String exerciseName) {
+        Exercise exercise = new Exercise(exerciseName);
+        exercise.setName(exerciseName);
+        return exerciseRepository.save(exercise);
+    }
+
     public void deleteExercise(Long id) {
         exerciseRepository.deleteById(id);
     }
