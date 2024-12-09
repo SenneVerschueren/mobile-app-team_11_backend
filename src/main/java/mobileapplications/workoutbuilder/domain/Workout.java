@@ -16,7 +16,7 @@ public class Workout {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)  // Foreign key
+    @JoinColumn(name = "user_id", nullable = false) // Foreign key
     @JsonBackReference
     private User user;
 
@@ -36,7 +36,7 @@ public class Workout {
 
     public Workout(String name) {
         this.name = name;
-        this.rest = 60;  // Default rest time
+        this.rest = 60; // Default rest time
     }
 
     // Getters and setters
@@ -83,5 +83,9 @@ public class Workout {
     public void addExercise(Exercise exercise) {
         exercises.add(exercise);
         exercise.setWorkout(this);
+    }
+
+    public void updateValuesWorkout(String name) {
+        this.name = name;
     }
 }

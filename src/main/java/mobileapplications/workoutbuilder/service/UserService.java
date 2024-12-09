@@ -46,15 +46,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    
-
     // Delete user by ID
     public boolean deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
             return true;
         }
-        return false;  // User not found
+        return false; // User not found
     }
 
     // Get all workouts for a user
@@ -63,7 +61,20 @@ public class UserService {
         if (user == null) {
             throw new UserServiceException("User not found with ID: " + userId);
         }
-        
+
         return user.getWorkouts();
+    }
+
+    // Update user by ID
+    public User updateUser(String email, User newInfo) {
+        User user = getUserByEmail(email);
+
+        if (user.getEmail() != newInfo.getEmail()) {
+            throw new UserServiceException("Email cannot be changed");
+        }
+
+        user.updateValuesUser(newInfo.getName(), newInfo.getEmail(), newInfo.getPassword());
+
+        return userRepository.save(user);
     }
 }

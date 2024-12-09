@@ -35,15 +35,10 @@ public class SetController {
         return ResponseEntity.ok(createdSet);
     }
 
+    // Update a set
     @PutMapping("/{id}")
-    public ResponseEntity<Set> updateSet(@RequestBody Set set, @PathVariable Long id) {
-        Set existingSet = setService.getSetById(id);
-        if (existingSet == null) {
-            return ResponseEntity.notFound().build();
-        }
-        set.setId(id);
-        Set updatedSet = setService.createSet(set, existingSet.getExercise().getId());
-        return ResponseEntity.ok(updatedSet);
+    public Set updateSet(@PathVariable Long id, @RequestBody Set set) {
+        return setService.updateSet(id, set);
     }
 
     @DeleteMapping("/{id}")

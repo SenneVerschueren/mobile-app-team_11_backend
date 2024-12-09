@@ -19,7 +19,6 @@ public class WorkoutService {
     @Autowired
     private final UserService userService;
 
-    
     public WorkoutService(WorkoutRepository workoutRepository, UserService userService) {
         this.workoutRepository = workoutRepository;
         this.userService = userService;
@@ -53,5 +52,16 @@ public class WorkoutService {
     // Delete a workout by id
     public void deleteWorkout(Long id) {
         workoutRepository.deleteById(id);
+    }
+
+    public Workout updateWorkout(Long id, Workout editedWorkout) {
+        Optional<Workout> optionalWorkout = getWorkoutById(id);
+        if (!optionalWorkout.isPresent()) {
+            throw new WorkoutServiceException("Workout not found with id: " + id);
+        }
+        Workout workout = optionalWorkout.get();
+
+        workout.updateValuesWorkout(editedWorkout.getName());
+        return workoutRepository.save(workout);
     }
 }
