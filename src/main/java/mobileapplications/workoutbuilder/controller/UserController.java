@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/users")
@@ -33,7 +36,7 @@ public class UserController {
         return user;
     }
 
-    // get all workouts for a user
+    // Get all workouts for a user
     @GetMapping("/{id}/workouts")
     public List<Workout> getUserWorkouts(@PathVariable Long id) {
         try {
@@ -42,5 +45,11 @@ public class UserController {
         } catch (UserServiceException e) {
             throw new UserServiceException(e.getMessage());
         }
+    }
+
+    // Update a user
+    @PutMapping("/{email}")
+    public User updateUser(@PathVariable String email, @RequestBody User user) {
+        return userService.updateUser(email, user);
     }
 }

@@ -18,9 +18,9 @@ public class Set {
     private Long id;
 
     private int reps;
-    
+
     private int weight;
-    
+
     private int duration;
 
     @ManyToOne
@@ -74,6 +74,13 @@ public class Set {
     }
 
     public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
+    }
+
+    public void updateValuesSet(int reps, int weight, int duration, Exercise exercise) {
+        this.reps = reps;
+        this.weight = weight;
+        this.duration = duration;
         this.exercise = exercise;
     }
 }

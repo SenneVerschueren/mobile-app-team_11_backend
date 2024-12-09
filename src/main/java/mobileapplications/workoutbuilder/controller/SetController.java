@@ -34,4 +34,10 @@ public class SetController {
         Set createdSet = setService.createSet(set, exerciseId);
         return ResponseEntity.ok(createdSet);
     }
+
+    // Update a set
+    @PutMapping("/{id}")
+    public Set updateSet(@PathVariable Long id, @RequestBody Set set) {
+        return setService.updateSet(id, set);
+    }
 }
