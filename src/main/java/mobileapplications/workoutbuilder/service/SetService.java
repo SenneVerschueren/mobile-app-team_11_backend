@@ -38,4 +38,8 @@ public class SetService {
 
         return setRepository.save(set);
     }
+
+    public void deleteSet(Long id) {
+        setRepository.deleteById(id);
+    }
 }
