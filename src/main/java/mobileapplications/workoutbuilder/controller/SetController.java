@@ -34,4 +34,24 @@ public class SetController {
         Set createdSet = setService.createSet(set, exerciseId);
         return ResponseEntity.ok(createdSet);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Set> updateSet(@RequestBody Set set, @PathVariable Long id) {
+        Set existingSet = setService.getSetById(id);
+        if (existingSet == null) {
+            return ResponseEntity.notFound().build();
+        }
+        set.setId(id);
+        Set updatedSet = setService.createSet(set, existingSet.getExercise().getId());
+        return ResponseEntity.ok(updatedSet);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSet(@PathVariable Long id) {
+        if (setService.getSetById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        setService.deleteSet(id);
+        return ResponseEntity.noContent().build();
+    }
 }
