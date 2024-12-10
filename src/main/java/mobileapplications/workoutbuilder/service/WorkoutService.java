@@ -61,7 +61,7 @@ public class WorkoutService {
         }
         Workout workout = optionalWorkout.get();
 
-        workout.updateValuesWorkout(editedWorkout.getName());
+        workout.updateValuesWorkout(editedWorkout.getName(), editedWorkout.getRest());
         return workoutRepository.save(workout);
     }
 }
