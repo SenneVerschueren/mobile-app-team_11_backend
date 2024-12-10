@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/exercises")
 public class ExerciseController {
-    
+
     @Autowired
     private final ExerciseService exerciseService;
 
@@ -40,5 +40,10 @@ public class ExerciseController {
     public ResponseEntity<Exercise> getExerciseById(@PathVariable Long id) {
         Exercise exercise = exerciseService.getExerciseById(id);
         return ResponseEntity.ok(exercise);
+    }
+
+    @PutMapping("/{id}")
+    public Exercise updateExercise(@PathVariable Long id, @RequestBody Exercise exercise) {
+        return exerciseService.updateExercise(id, exercise);
     }
 }

@@ -54,14 +54,14 @@ public class WorkoutService {
         workoutRepository.deleteById(id);
     }
 
-    public Workout updateWorkout(Long id, Workout editedWorkout) {
+    public Workout updateWorkout(Long id, Workout newValuesWorkout) {
         Optional<Workout> optionalWorkout = getWorkoutById(id);
         if (!optionalWorkout.isPresent()) {
             throw new WorkoutServiceException("Workout not found with id: " + id);
         }
         Workout workout = optionalWorkout.get();
 
-        workout.updateValuesWorkout(editedWorkout.getName());
+        workout.updateValuesWorkout(newValuesWorkout.getName(), newValuesWorkout.getRest());
         return workoutRepository.save(workout);
     }
 }

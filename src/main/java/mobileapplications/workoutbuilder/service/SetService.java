@@ -42,12 +42,12 @@ public class SetService {
     public void deleteSet(Long id) {
         setRepository.deleteById(id);
     }
-    
-    public Set updateSet(Long id, Set editedSet) {
+
+    public Set updateSet(Long id, Set newValuesSet) {
         Set set = getSetById(id);
 
-        set.updateValuesSet(editedSet.getReps(), editedSet.getWeight(), editedSet.getDuration(),
-                editedSet.getExercise());
+        set.updateValuesSet(newValuesSet.getReps(), newValuesSet.getWeight(), newValuesSet.getDuration(),
+                newValuesSet.getExercise());
 
         return setRepository.save(set);
     }

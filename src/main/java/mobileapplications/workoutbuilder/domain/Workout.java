@@ -85,7 +85,9 @@ public class Workout {
         exercise.setWorkout(this);
     }
 
-    public void updateValuesWorkout(String name) {
+    public void updateValuesWorkout(String name, int rest) {
         this.name = name;
+        this.rest = rest;
+
     }
 }
