@@ -69,7 +69,7 @@ public class UserService {
     public User updateUser(String email, User newValuesUser) {
         User user = getUserByEmail(email);
 
-        if (user.getEmail() != newValuesUser.getEmail()) {
+        if (!user.getEmail().equals(newValuesUser.getEmail())) {
             throw new UserServiceException("Email cannot be changed");
         }
 
