@@ -19,13 +19,13 @@ import mobileapplications.workoutbuilder.enums.WorkoutType;
 @Entity
 @Table(name = "exercises")
 public class Exercise {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "workout_id", nullable = false)  // Foreign key
+    @JoinColumn(name = "workout_id", nullable = false) // Foreign key
     @JsonBackReference
     private Workout workout;
 
@@ -79,12 +79,16 @@ public class Exercise {
 
     @OneToMany(mappedBy = "exercise")
     private List<Set> sets;
-    
 
     // Constructors
-    public Exercise() {}
+    public Exercise() {
+    }
 
-    public Exercise(String name, WorkoutType type, Number rest, Boolean autoIncrease, Number autoIncreaseFactor, Number autoIncreaseWeightStep, Number autoIncreaseStartWeight, Number autoIncreaseMinSets, Number autoIncreaseMaxSets, Number autoIncreaseMin_reps, Number autoIncreaseMax_reps, Number autoIncreaseStartDuration, Number autoIncreaseDurationSets, Number autoIncreaseCurrentSets, Number autoIncreaseCurrent_reps, Number autoIncreaseCurrentDuration) {
+    public Exercise(String name, WorkoutType type, Number rest, Boolean autoIncrease, Number autoIncreaseFactor,
+            Number autoIncreaseWeightStep, Number autoIncreaseStartWeight, Number autoIncreaseMinSets,
+            Number autoIncreaseMaxSets, Number autoIncreaseMin_reps, Number autoIncreaseMax_reps,
+            Number autoIncreaseStartDuration, Number autoIncreaseDurationSets, Number autoIncreaseCurrentSets,
+            Number autoIncreaseCurrent_reps, Number autoIncreaseCurrentDuration) {
         this.name = name;
         this.type = type;
         this.rest = rest;
@@ -260,6 +264,30 @@ public class Exercise {
     public void addSet(Set set) {
         sets.add(set);
         set.setExercise(this);
+    }
+
+    public void updateValuesExercise(String name, WorkoutType type, Number rest, Boolean autoIncrease,
+            Number autoIncreaseFactor,
+            Number autoIncreaseWeightStep, Number autoIncreaseStartWeight, Number autoIncreaseMinSets,
+            Number autoIncreaseMaxSets, Number autoIncreaseMin_reps, Number autoIncreaseMax_reps,
+            Number autoIncreaseStartDuration, Number autoIncreaseDurationSets, Number autoIncreaseCurrentSets,
+            Number autoIncreaseCurrent_reps, Number autoIncreaseCurrentDuration) {
+        this.name = name;
+        this.type = type;
+        this.rest = rest;
+        this.autoIncrease = autoIncrease;
+        this.autoIncreaseFactor = autoIncreaseFactor;
+        this.autoIncreaseWeightStep = autoIncreaseWeightStep;
+        this.autoIncreaseStartWeight = autoIncreaseStartWeight;
+        this.autoIncreaseMinSets = autoIncreaseMinSets;
+        this.autoIncreaseMaxSets = autoIncreaseMaxSets;
+        this.autoIncreaseMin_reps = autoIncreaseMin_reps;
+        this.autoIncreaseMax_reps = autoIncreaseMax_reps;
+        this.autoIncreaseStartDuration = autoIncreaseStartDuration;
+        this.autoIncreaseDurationSets = autoIncreaseDurationSets;
+        this.autoIncreaseCurrentSets = autoIncreaseCurrentSets;
+        this.autoIncreaseCurrent_reps = autoIncreaseCurrent_reps;
+        this.autoIncreaseCurrentDuration = autoIncreaseCurrentDuration;
     }
 
 }

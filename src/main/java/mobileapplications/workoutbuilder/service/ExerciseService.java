@@ -18,7 +18,6 @@ public class ExerciseService {
     @Autowired
     private final WorkoutService workoutService;
 
-    
     public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService) {
         this.exerciseRepository = exerciseRepository;
         this.workoutService = workoutService;
@@ -46,10 +45,32 @@ public class ExerciseService {
             // handle the case where the workout is not found
             throw new ExerciseServiceException("Workout not found with id: " + workoutId);
         }
-        
+
     }
 
     public void deleteExercise(Long id) {
         exerciseRepository.deleteById(id);
+    }
+
+    public Exercise updateExercise(Long id, Exercise newValuesExercise) {
+        Exercise exercise = getExerciseById(id);
+        exercise.updateValuesExercise(
+                newValuesExercise.getName(),
+                newValuesExercise.getType(),
+                newValuesExercise.getRest(),
+                newValuesExercise.getAutoIncrease(),
+                newValuesExercise.getAutoIncreaseFactor(),
+                newValuesExercise.getAutoIncreaseWeightStep(),
+                newValuesExercise.getAutoIncreaseStartWeight(),
+                newValuesExercise.getAutoIncreaseMinSets(),
+                newValuesExercise.getAutoIncreaseMaxSets(),
+                newValuesExercise.getAutoIncreaseMin_reps(),
+                newValuesExercise.getAutoIncreaseMax_reps(),
+                newValuesExercise.getAutoIncreaseStartDuration(),
+                newValuesExercise.getAutoIncreaseDurationSets(),
+                newValuesExercise.getAutoIncreaseCurrentSets(),
+                newValuesExercise.getAutoIncreaseCurrent_reps(),
+                newValuesExercise.getAutoIncreaseCurrentDuration());
+        return exerciseRepository.save(exercise);
     }
 }
