@@ -66,14 +66,14 @@ public class UserService {
     }
 
     // Update user by ID
-    public User updateUser(String email, User newInfo) {
+    public User updateUser(String email, User newValuesUser) {
         User user = getUserByEmail(email);
 
-        if (user.getEmail() != newInfo.getEmail()) {
+        if (user.getEmail() != newValuesUser.getEmail()) {
             throw new UserServiceException("Email cannot be changed");
         }
 
-        user.updateValuesUser(newInfo.getName(), newInfo.getEmail(), newInfo.getPassword());
+        user.updateValuesUser(newValuesUser.getName(), newValuesUser.getEmail(), newValuesUser.getPassword());
 
         return userRepository.save(user);
     }
