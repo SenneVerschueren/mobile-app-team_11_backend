@@ -271,7 +271,7 @@ public class Exercise {
             Number autoIncreaseWeightStep, Number autoIncreaseStartWeight, Number autoIncreaseMinSets,
             Number autoIncreaseMaxSets, Number autoIncreaseMin_reps, Number autoIncreaseMax_reps,
             Number autoIncreaseStartDuration, Number autoIncreaseDurationSets, Number autoIncreaseCurrentSets,
-            Number autoIncreaseCurrent_reps, Number autoIncreaseCurrentDuration) {
+            Number autoIncreaseCurrent_reps, Number autoIncreaseCurrentDuration, List<Set> sets) {
         this.name = name;
         this.type = type;
         this.rest = rest;
@@ -288,6 +288,7 @@ public class Exercise {
         this.autoIncreaseCurrentSets = autoIncreaseCurrentSets;
         this.autoIncreaseCurrent_reps = autoIncreaseCurrent_reps;
         this.autoIncreaseCurrentDuration = autoIncreaseCurrentDuration;
+        this.sets = sets;
     }
 
 }

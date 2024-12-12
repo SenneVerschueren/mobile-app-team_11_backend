@@ -70,7 +70,8 @@ public class ExerciseService {
                 newValuesExercise.getAutoIncreaseDurationSets(),
                 newValuesExercise.getAutoIncreaseCurrentSets(),
                 newValuesExercise.getAutoIncreaseCurrent_reps(),
-                newValuesExercise.getAutoIncreaseCurrentDuration());
+                newValuesExercise.getAutoIncreaseCurrentDuration(),
+                newValuesExercise.getSets());
         return exerciseRepository.save(exercise);
     }
 }
