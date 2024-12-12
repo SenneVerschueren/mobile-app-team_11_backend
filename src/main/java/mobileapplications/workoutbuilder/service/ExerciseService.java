@@ -48,8 +48,10 @@ public class ExerciseService {
 
     }
 
-    public void deleteExercise(Long id) {
+    public String deleteExercise(Long id) {
+        String exerciseName = getExerciseById(id).getName();
         exerciseRepository.deleteById(id);
+        return exerciseName + " is successfully deleted!";
     }
 
     public Exercise updateExercise(Long id, Exercise newValuesExercise) {
