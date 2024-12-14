@@ -46,4 +46,9 @@ public class ExerciseController {
     public Exercise updateExercise(@PathVariable Long id, @RequestBody Exercise exercise) {
         return exerciseService.updateExercise(id, exercise);
     }
+
+    @DeleteMapping("/{id}")
+    public String deleteExcercise(@PathVariable Long id) {
+        return exerciseService.deleteExercise(id);
+    }
 }

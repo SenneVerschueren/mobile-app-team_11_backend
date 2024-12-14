@@ -54,8 +54,10 @@ public class ExerciseService {
         return exerciseRepository.save(exercise);
     }
 
-    public void deleteExercise(Long id) {
+    public String deleteExercise(Long id) {
+        String exerciseName = getExerciseById(id).getName();
         exerciseRepository.deleteById(id);
+        return exerciseName + " is successfully deleted!";
     }
 
     public Exercise updateExercise(Long id, Exercise newValuesExercise) {
@@ -76,7 +78,8 @@ public class ExerciseService {
                 newValuesExercise.getAutoIncreaseDurationSets(),
                 newValuesExercise.getAutoIncreaseCurrentSets(),
                 newValuesExercise.getAutoIncreaseCurrent_reps(),
-                newValuesExercise.getAutoIncreaseCurrentDuration());
+                newValuesExercise.getAutoIncreaseCurrentDuration(),
+                newValuesExercise.getSets());
         return exerciseRepository.save(exercise);
     }
 }

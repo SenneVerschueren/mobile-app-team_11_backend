@@ -56,12 +56,12 @@ public class WorkoutService {
 
     public Workout updateWorkout(Long id, Workout newValuesWorkout) {
         Optional<Workout> optionalWorkout = getWorkoutById(id);
-        if (!optionalWorkout.isPresent()) {
+        if (optionalWorkout.isEmpty()) {
             throw new WorkoutServiceException("Workout not found with id: " + id);
         }
         Workout workout = optionalWorkout.get();
 
-        workout.updateValuesWorkout(newValuesWorkout.getName(), newValuesWorkout.getRest());
+        workout.updateValuesWorkout(newValuesWorkout.getName(), newValuesWorkout.getRest(), newValuesWorkout.getExercises());
         return workoutRepository.save(workout);
     }
 }
