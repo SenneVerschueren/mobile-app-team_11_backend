@@ -27,6 +27,11 @@ public class ExerciseController {
 
     @PostMapping
     public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise, @RequestParam Long workoutId) {
+        // if only name is provided, create an exercise with the name
+        if (exercise.getName() != null && exercise.getType() == null) {
+            Exercise createdExercise = exerciseService.createExerciseByName(exercise.getName());
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdExercise);
+        } 
         Exercise createdExercise = exerciseService.createExercise(exercise, workoutId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdExercise);
     }

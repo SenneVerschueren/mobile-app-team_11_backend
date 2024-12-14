@@ -39,6 +39,10 @@ public class SetService {
         return setRepository.save(set);
     }
 
+    public void deleteSet(Long id) {
+        setRepository.deleteById(id);
+    }
+
     public Set updateSet(Long id, Set newValuesSet) {
         Set set = getSetById(id);
 

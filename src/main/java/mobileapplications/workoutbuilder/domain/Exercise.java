@@ -33,55 +33,59 @@ public class Exercise {
     private String name;
 
     @Column(nullable = false)
-    private WorkoutType type;
+    private WorkoutType type = WorkoutType.WEIGHTS;
 
     @Column(nullable = false)
-    private Number rest;
+    private Number rest = 60;
 
     @Column(nullable = false)
-    private Boolean autoIncrease;
+    private Boolean autoIncrease = false;
 
     @Column(nullable = false)
-    private Number autoIncreaseFactor;
+    private Number autoIncreaseFactor = 1.25;
 
     @Column(nullable = false)
-    private Number autoIncreaseWeightStep;
+    private Number autoIncreaseWeightStep = 2.5;
 
     @Column(nullable = false)
-    private Number autoIncreaseStartWeight;
+    private Number autoIncreaseStartWeight = 20;
 
     @Column(nullable = false)
-    private Number autoIncreaseMinSets;
+    private Number autoIncreaseMinSets = 3;
 
     @Column(nullable = false)
-    private Number autoIncreaseMaxSets;
+    private Number autoIncreaseMaxSets = 5;
 
     @Column(nullable = false)
-    private Number autoIncreaseMin_reps;
+    private Number autoIncreaseMin_reps = 8;
 
     @Column(nullable = false)
-    private Number autoIncreaseMax_reps;
+    private Number autoIncreaseMax_reps = 12;
 
     @Column(nullable = false)
-    private Number autoIncreaseStartDuration;
+    private Number autoIncreaseStartDuration = 30;
 
     @Column(nullable = false)
-    private Number autoIncreaseDurationSets;
+    private Number autoIncreaseDurationSets = 3;
 
     @Column(nullable = false)
-    private Number autoIncreaseCurrentSets;
+    private Number autoIncreaseCurrentSets = 3;
 
     @Column(nullable = false)
-    private Number autoIncreaseCurrent_reps;
+    private Number autoIncreaseCurrent_reps = 8;
 
     @Column(nullable = false)
-    private Number autoIncreaseCurrentDuration;
+    private Number autoIncreaseCurrentDuration = 30;
 
     @OneToMany(mappedBy = "exercise")
     private List<Set> sets;
 
     // Constructors
     public Exercise() {
+    }
+
+    public Exercise(String name) {
+        this.name = name;
     }
 
     public Exercise(String name, WorkoutType type, Number rest, Boolean autoIncrease, Number autoIncreaseFactor,

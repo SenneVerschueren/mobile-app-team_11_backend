@@ -40,4 +40,13 @@ public class SetController {
     public Set updateSet(@PathVariable Long id, @RequestBody Set set) {
         return setService.updateSet(id, set);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSet(@PathVariable Long id) {
+        if (setService.getSetById(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        setService.deleteSet(id);
+        return ResponseEntity.noContent().build();
+    }
 }
