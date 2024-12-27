@@ -46,8 +46,38 @@ public class WorkoutController {
     }
 
     @PutMapping("/{id}")
-    public Workout updateWorkout(@PathVariable Long id, @RequestBody Workout workout) {
-        return workoutService.updateWorkout(id, workout);
+    public Workout updateWorkout(@PathVariable Long id, @RequestBody WorkoutUpdateRequest updateRequest) {
+        return workoutService.updateWorkout(id, updateRequest.getName(), updateRequest.getRest(), updateRequest.getExerciseIds());
     }
 
+}
+
+class WorkoutUpdateRequest {
+    private String name;
+    private Integer rest;
+    private List<Long> exerciseIds;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getRest() {
+        return rest;
+    }
+
+    public void setRest(Integer rest) {
+        this.rest = rest;
+    }
+
+    public List<Long> getExerciseIds() {
+        return exerciseIds;
+    }
+
+    public void setExerciseIds(List<Long> exerciseIds) {
+        this.exerciseIds = exerciseIds;
+    }
 }

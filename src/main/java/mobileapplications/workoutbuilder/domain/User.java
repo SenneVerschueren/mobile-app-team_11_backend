@@ -54,6 +54,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.workouts = Collections.emptyList();
     }
 
     // Getters and Setters

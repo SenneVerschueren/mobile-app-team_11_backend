@@ -1,11 +1,9 @@
 package mobileapplications.workoutbuilder.domain;
 
 import jakarta.persistence.*;
-
+import java.util.ArrayList;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -16,7 +14,7 @@ public class Workout {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // Foreign key
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     private User user;
 
@@ -28,15 +26,18 @@ public class Workout {
 
     // One workout can have multiple exercises
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "exercise_order")
     @JsonManagedReference
-    private List<Exercise> exercises;
+    private List<Exercise> exercises = new ArrayList<>();
 
     public Workout() {
+        this.exercises = new ArrayList<>();
     }
 
     public Workout(String name) {
         this.name = name;
         this.rest = 60; // Default rest time
+        this.exercises = new ArrayList<>();
     }
 
     // Getters and setters
@@ -77,7 +78,7 @@ public class Workout {
     }
 
     public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
+        this.exercises = exercises != null ? exercises : new ArrayList<>();
     }
 
     public void addExercise(Exercise exercise) {
@@ -88,7 +89,6 @@ public class Workout {
     public void updateValuesWorkout(String name, int rest, List<Exercise> exercises) {
         this.name = name;
         this.rest = rest;
-        this.exercises = exercises;
-
+        this.exercises = exercises != null ? exercises : new ArrayList<>();
     }
 }
