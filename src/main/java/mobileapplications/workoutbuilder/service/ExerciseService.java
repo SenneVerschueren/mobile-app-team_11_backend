@@ -1,9 +1,12 @@
 package mobileapplications.workoutbuilder.service;
 
 import mobileapplications.workoutbuilder.domain.Exercise;
+import mobileapplications.workoutbuilder.domain.Set;
 import mobileapplications.workoutbuilder.domain.Workout;
 import mobileapplications.workoutbuilder.exception.ExerciseServiceException;
 import mobileapplications.workoutbuilder.repository.ExerciseRepository;
+import mobileapplications.workoutbuilder.repository.SetRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,9 @@ public class ExerciseService {
 
     @Autowired
     private final WorkoutService workoutService;
+
+    @Autowired
+    private SetRepository setRepositroy;
 
     public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService) {
         this.exerciseRepository = exerciseRepository;
@@ -62,24 +68,27 @@ public class ExerciseService {
 
     public Exercise updateExercise(Long id, Exercise newValuesExercise) {
         Exercise exercise = getExerciseById(id);
-        exercise.updateValuesExercise(
-                newValuesExercise.getName(),
-                newValuesExercise.getType(),
-                newValuesExercise.getRest(),
-                newValuesExercise.getAutoIncrease(),
-                newValuesExercise.getAutoIncreaseFactor(),
-                newValuesExercise.getAutoIncreaseWeightStep(),
-                newValuesExercise.getAutoIncreaseStartWeight(),
-                newValuesExercise.getAutoIncreaseMinSets(),
-                newValuesExercise.getAutoIncreaseMaxSets(),
-                newValuesExercise.getAutoIncreaseMin_reps(),
-                newValuesExercise.getAutoIncreaseMax_reps(),
-                newValuesExercise.getAutoIncreaseStartDuration(),
-                newValuesExercise.getAutoIncreaseDurationSets(),
-                newValuesExercise.getAutoIncreaseCurrentSets(),
-                newValuesExercise.getAutoIncreaseCurrent_reps(),
-                newValuesExercise.getAutoIncreaseCurrentDuration(),
-                newValuesExercise.getSets());
+        exercise.setName(newValuesExercise.getName());
+        exercise.setType(newValuesExercise.getType());
+        exercise.setRest(newValuesExercise.getRest());
+        exercise.setAutoIncrease(newValuesExercise.getAutoIncrease());
+        exercise.setAutoIncreaseFactor(newValuesExercise.getAutoIncreaseFactor());
+        exercise.setAutoIncreaseWeightStep(newValuesExercise.getAutoIncreaseWeightStep());
+        exercise.setAutoIncreaseStartWeight(newValuesExercise.getAutoIncreaseStartWeight());
+        exercise.setAutoIncreaseMinSets(newValuesExercise.getAutoIncreaseMinSets());
+        exercise.setAutoIncreaseMaxSets(newValuesExercise.getAutoIncreaseMaxSets());
+        exercise.setAutoIncreaseMin_reps(newValuesExercise.getAutoIncreaseMin_reps());
+        exercise.setAutoIncreaseMax_reps(newValuesExercise.getAutoIncreaseMax_reps());
+        exercise.setAutoIncreaseStartDuration(newValuesExercise.getAutoIncreaseStartDuration());
+        exercise.setAutoIncreaseDurationSets(newValuesExercise.getAutoIncreaseDurationSets());
+        exercise.setAutoIncreaseCurrentSets(newValuesExercise.getAutoIncreaseCurrentSets());
+        exercise.setAutoIncreaseCurrent_reps(newValuesExercise.getAutoIncreaseCurrent_reps());
+        exercise.setAutoIncreaseCurrentDuration(newValuesExercise.getAutoIncreaseCurrentDuration());
+
+        List<Set> existingSets = exercise.getSets();
+        List<Set> newSets = newValuesExercise.getSets();
+
         return exerciseRepository.save(exercise);
+
     }
 }
