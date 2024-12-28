@@ -57,10 +57,10 @@ public class Exercise {
     private Number autoIncreaseMaxSets = 5;
 
     @Column(nullable = false)
-    private Number autoIncreaseMin_reps = 8;
+    private Number autoIncreaseMinReps = 8;
 
     @Column(nullable = false)
-    private Number autoIncreaseMax_reps = 12;
+    private Number autoIncreaseMaxReps = 12;
 
     @Column(nullable = false)
     private Number autoIncreaseStartDuration = 30;
@@ -72,13 +72,13 @@ public class Exercise {
     private Number autoIncreaseCurrentSets = 3;
 
     @Column(nullable = false)
-    private Number autoIncreaseCurrent_reps = 8;
+    private Number autoIncreaseCurrentReps = 8;
 
     @Column(nullable = false)
     private Number autoIncreaseCurrentDuration = 30;
 
     @OneToMany(mappedBy = "exercise")
-    private List<Set> sets;
+    private List<Set> sets = new ArrayList<>();
 
     // Constructors
     public Exercise() {
@@ -90,9 +90,9 @@ public class Exercise {
 
     public Exercise(String name, WorkoutType type, Number rest, Boolean autoIncrease, Number autoIncreaseFactor,
             Number autoIncreaseWeightStep, Number autoIncreaseStartWeight, Number autoIncreaseMinSets,
-            Number autoIncreaseMaxSets, Number autoIncreaseMin_reps, Number autoIncreaseMax_reps,
+            Number autoIncreaseMaxSets, Number autoIncreaseMinReps, Number autoIncreaseMaxReps,
             Number autoIncreaseStartDuration, Number autoIncreaseDurationSets, Number autoIncreaseCurrentSets,
-            Number autoIncreaseCurrent_reps, Number autoIncreaseCurrentDuration) {
+            Number autoIncreaseCurrentReps, Number autoIncreaseCurrentDuration) {
         this.name = name;
         this.type = type;
         this.rest = rest;
@@ -102,12 +102,12 @@ public class Exercise {
         this.autoIncreaseStartWeight = autoIncreaseStartWeight;
         this.autoIncreaseMinSets = autoIncreaseMinSets;
         this.autoIncreaseMaxSets = autoIncreaseMaxSets;
-        this.autoIncreaseMin_reps = autoIncreaseMin_reps;
-        this.autoIncreaseMax_reps = autoIncreaseMax_reps;
+        this.autoIncreaseMinReps = autoIncreaseMinReps;
+        this.autoIncreaseMaxReps = autoIncreaseMaxReps;
         this.autoIncreaseStartDuration = autoIncreaseStartDuration;
         this.autoIncreaseDurationSets = autoIncreaseDurationSets;
         this.autoIncreaseCurrentSets = autoIncreaseCurrentSets;
-        this.autoIncreaseCurrent_reps = autoIncreaseCurrent_reps;
+        this.autoIncreaseCurrentReps = autoIncreaseCurrentReps;
         this.autoIncreaseCurrentDuration = autoIncreaseCurrentDuration;
         this.sets = new ArrayList<>();
     }
@@ -193,20 +193,20 @@ public class Exercise {
         this.autoIncreaseMaxSets = autoIncreaseMaxSets;
     }
 
-    public Number getAutoIncreaseMin_reps() {
-        return autoIncreaseMin_reps;
+    public Number getAutoIncreaseMinReps() {
+        return autoIncreaseMinReps;
     }
 
-    public void setAutoIncreaseMin_reps(Number autoIncreaseMin_reps) {
-        this.autoIncreaseMin_reps = autoIncreaseMin_reps;
+    public void setAutoIncreaseMinReps(Number autoIncreaseMin_reps) {
+        this.autoIncreaseMinReps = autoIncreaseMin_reps;
     }
 
-    public Number getAutoIncreaseMax_reps() {
-        return autoIncreaseMax_reps;
+    public Number getAutoIncreaseMaxReps() {
+        return autoIncreaseMaxReps;
     }
 
-    public void setAutoIncreaseMax_reps(Number autoIncreaseMax_reps) {
-        this.autoIncreaseMax_reps = autoIncreaseMax_reps;
+    public void setAutoIncreaseMaxReps(Number autoIncreaseMax_reps) {
+        this.autoIncreaseMaxReps = autoIncreaseMax_reps;
     }
 
     public Number getAutoIncreaseStartDuration() {
@@ -233,12 +233,12 @@ public class Exercise {
         this.autoIncreaseCurrentSets = autoIncreaseCurrentSets;
     }
 
-    public Number getAutoIncreaseCurrent_reps() {
-        return autoIncreaseCurrent_reps;
+    public Number getAutoIncreaseCurrentReps() {
+        return autoIncreaseCurrentReps;
     }
 
-    public void setAutoIncreaseCurrent_reps(Number autoIncreaseCurrent_reps) {
-        this.autoIncreaseCurrent_reps = autoIncreaseCurrent_reps;
+    public void setAutoIncreaseCurrentReps(Number autoIncreaseCurrent_reps) {
+        this.autoIncreaseCurrentReps = autoIncreaseCurrent_reps;
     }
 
     public Number getAutoIncreaseCurrentDuration() {
@@ -273,9 +273,9 @@ public class Exercise {
     public void updateValuesExercise(String name, WorkoutType type, Number rest, Boolean autoIncrease,
             Number autoIncreaseFactor,
             Number autoIncreaseWeightStep, Number autoIncreaseStartWeight, Number autoIncreaseMinSets,
-            Number autoIncreaseMaxSets, Number autoIncreaseMin_reps, Number autoIncreaseMax_reps,
+            Number autoIncreaseMaxSets, Number autoIncreaseMinReps, Number autoIncreaseMaxReps,
             Number autoIncreaseStartDuration, Number autoIncreaseDurationSets, Number autoIncreaseCurrentSets,
-            Number autoIncreaseCurrent_reps, Number autoIncreaseCurrentDuration, List<Set> sets) {
+            Number autoIncreaseCurrentReps, Number autoIncreaseCurrentDuration, List<Set> sets) {
         this.name = name;
         this.type = type;
         this.rest = rest;
@@ -285,12 +285,12 @@ public class Exercise {
         this.autoIncreaseStartWeight = autoIncreaseStartWeight;
         this.autoIncreaseMinSets = autoIncreaseMinSets;
         this.autoIncreaseMaxSets = autoIncreaseMaxSets;
-        this.autoIncreaseMin_reps = autoIncreaseMin_reps;
-        this.autoIncreaseMax_reps = autoIncreaseMax_reps;
+        this.autoIncreaseMinReps = autoIncreaseMinReps;
+        this.autoIncreaseMaxReps = autoIncreaseMaxReps;
         this.autoIncreaseStartDuration = autoIncreaseStartDuration;
         this.autoIncreaseDurationSets = autoIncreaseDurationSets;
         this.autoIncreaseCurrentSets = autoIncreaseCurrentSets;
-        this.autoIncreaseCurrent_reps = autoIncreaseCurrent_reps;
+        this.autoIncreaseCurrentReps = autoIncreaseCurrentReps;
         this.autoIncreaseCurrentDuration = autoIncreaseCurrentDuration;
         this.sets = sets;
     }
