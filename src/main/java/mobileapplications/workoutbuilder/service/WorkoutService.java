@@ -57,29 +57,37 @@ public class WorkoutService {
     }
 
     public Workout updateWorkout(Long id, String workoutName, Integer rest, List<Long> exerciseIds) {
-    Optional<Workout> optionalWorkout = getWorkoutById(id);
-    if (optionalWorkout.isEmpty()) {
-        throw new WorkoutServiceException("Workout not found with id: " + id);
-    }
-    Workout workout = optionalWorkout.get();
-
-    // Update workout details
-    workout.setName(workoutName);
-    workout.setRest(rest);
-
-    // Rearrange exercises according to the provided list of exercise IDs
-    List<Exercise> exercises = new ArrayList<>();
-    for (Long exerciseId : exerciseIds) {
-        Optional<Exercise> optionalExercise = exerciseRepository.findById(exerciseId);
-        if (optionalExercise.isEmpty()) {
-            throw new WorkoutServiceException("Exercise not found with id: " + exerciseId);
+        Optional<Workout> optionalWorkout = getWorkoutById(id);
+        if (optionalWorkout.isEmpty()) {
+            throw new WorkoutServiceException("Workout not found with id: " + id);
         }
-        Exercise exercise = optionalExercise.get();
-        exercises.add(exercise);
+        Workout workout = optionalWorkout.get();
+
+        // Update workout details
+        workout.setName(workoutName);
+        workout.setRest(rest);
+
+        // Rearrange exercises according to the provided list of exercise IDs
+        List<Exercise> exercises = new ArrayList<>();
+        for (Long exerciseId : exerciseIds) {
+            Optional<Exercise> optionalExercise = exerciseRepository.findById(exerciseId);
+            if (optionalExercise.isEmpty()) {
+                throw new WorkoutServiceException("Exercise not found with id: " + exerciseId);
+            }
+            Exercise exercise = optionalExercise.get();
+            exercises.add(exercise);
+        }
+
+        workout.setExercises(exercises);
+
+        return workoutRepository.save(workout);
     }
 
-    workout.setExercises(exercises);
-
-    return workoutRepository.save(workout);
-}
+    public Exercise addExerciseToWorkout(Long workoutId, Exercise exercise) {
+        Workout workout = getWorkoutById(workoutId).orElseThrow(() -> new WorkoutServiceException("Workout not found with id: " + workoutId));
+        exercise.setWorkout(workout);
+        workout.addExercise(exercise);
+        workoutRepository.save(workout);
+        return exerciseRepository.save(exercise);
+    }
 }

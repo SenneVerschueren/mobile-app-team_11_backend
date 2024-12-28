@@ -87,7 +87,9 @@ public class Exercise {
     @JsonManagedReference
     private List<Set> sets = new ArrayList<>();
 
-    // Constructors
+    @Column(name = "order_index", nullable = false)
+    private int orderIndex;
+
     public Exercise() {
     }
 
@@ -117,6 +119,7 @@ public class Exercise {
         this.autoIncreaseCurrentReps = autoIncreaseCurrentReps;
         this.autoIncreaseCurrentDuration = autoIncreaseCurrentDuration;
         this.sets = new ArrayList<>();
+        this.orderIndex = 0;
     }
 
     // // Getters and Setters

@@ -24,9 +24,7 @@ public class Workout {
     @Column(nullable = false)
     private int rest;
 
-    // One workout can have multiple exercises
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderColumn(name = "exercise_order")
     @JsonManagedReference
     private List<Exercise> exercises = new ArrayList<>();
 
@@ -36,11 +34,10 @@ public class Workout {
 
     public Workout(String name) {
         this.name = name;
-        this.rest = 60; // Default rest time
+        this.rest = 60;
         this.exercises = new ArrayList<>();
     }
 
-    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -74,6 +71,7 @@ public class Workout {
     }
 
     public List<Exercise> getExercises() {
+        exercises.sort((e1, e2) -> e1.getOrderIndex() - e2.getOrderIndex());
         return exercises;
     }
 
@@ -82,8 +80,16 @@ public class Workout {
     }
 
     public void addExercise(Exercise exercise) {
+        exercise.setOrderIndex(exercises.size());
         exercises.add(exercise);
         exercise.setWorkout(this);
+    }
+
+    public void updateExercisesOrder(List<Exercise> orderedExercises) {
+        for (int i = 0; i < orderedExercises.size(); i++) {
+            orderedExercises.get(i).setOrderIndex(i);
+        }
+        this.exercises = orderedExercises;
     }
 
     public void updateValuesWorkout(String name, int rest, List<Exercise> exercises) {
