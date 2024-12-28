@@ -88,6 +88,20 @@ public class ExerciseService {
         List<Set> existingSets = exercise.getSets();
         List<Set> newSets = newValuesExercise.getSets();
 
+        for (int i = 0; i < newSets.size(); i++) {
+            if (i < existingSets.size()) {
+                // Update existing set
+                Set existingSet = existingSets.get(i);
+                Set newSet = newSets.get(i);
+                existingSet.updateValuesSet(newSet.getReps(), newSet.getWeight(), newSet.getDuration(), exercise);
+            } else {
+                // Create new set
+                Set newSet = newSets.get(i);
+                newSet.setExercise(exercise);
+                existingSets.add(newSet);
+            }
+        }
+
         return exerciseRepository.save(exercise);
 
     }
