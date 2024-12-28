@@ -77,12 +77,12 @@ public class ExerciseService {
         exercise.setAutoIncreaseStartWeight(newValuesExercise.getAutoIncreaseStartWeight());
         exercise.setAutoIncreaseMinSets(newValuesExercise.getAutoIncreaseMinSets());
         exercise.setAutoIncreaseMaxSets(newValuesExercise.getAutoIncreaseMaxSets());
-        exercise.setAutoIncreaseMin_reps(newValuesExercise.getAutoIncreaseMin_reps());
-        exercise.setAutoIncreaseMax_reps(newValuesExercise.getAutoIncreaseMax_reps());
+        exercise.setAutoIncreaseMinReps(newValuesExercise.getAutoIncreaseMinReps());
+        exercise.setAutoIncreaseMaxReps(newValuesExercise.getAutoIncreaseMaxReps());
         exercise.setAutoIncreaseStartDuration(newValuesExercise.getAutoIncreaseStartDuration());
         exercise.setAutoIncreaseDurationSets(newValuesExercise.getAutoIncreaseDurationSets());
         exercise.setAutoIncreaseCurrentSets(newValuesExercise.getAutoIncreaseCurrentSets());
-        exercise.setAutoIncreaseCurrent_reps(newValuesExercise.getAutoIncreaseCurrent_reps());
+        exercise.setAutoIncreaseCurrentReps(newValuesExercise.getAutoIncreaseCurrentReps());
         exercise.setAutoIncreaseCurrentDuration(newValuesExercise.getAutoIncreaseCurrentDuration());
 
         List<Set> existingSets = exercise.getSets();
