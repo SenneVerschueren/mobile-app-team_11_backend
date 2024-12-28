@@ -42,46 +42,49 @@ public class Exercise {
     private WorkoutType type = WorkoutType.WEIGHTS;
 
     @Column(nullable = false)
-    private Number rest = 60;
+    private int rest = 60;
 
     @Column(nullable = false)
     private Boolean autoIncrease = false;
 
     @Column(nullable = false)
-    private Number autoIncreaseFactor = 1.25;
+    private double autoIncreaseFactor = 1.25;
 
     @Column(nullable = false)
-    private Number autoIncreaseWeightStep = 2.5;
+    private double autoIncreaseWeightStep = 2.5;
 
     @Column(nullable = false)
-    private Number autoIncreaseStartWeight = 20;
+    private int autoIncreaseStartWeight = 20;
 
     @Column(nullable = false)
-    private Number autoIncreaseMinSets = 3;
+    private int autoIncreaseMinSets = 3;
 
     @Column(nullable = false)
-    private Number autoIncreaseMaxSets = 5;
+    private int autoIncreaseMaxSets = 5;
 
     @Column(nullable = false)
-    private Number autoIncreaseMinReps = 8;
+    private int autoIncreaseMinReps = 8;
 
     @Column(nullable = false)
-    private Number autoIncreaseMaxReps = 12;
+    private int autoIncreaseMaxReps = 12;
 
     @Column(nullable = false)
-    private Number autoIncreaseStartDuration = 30;
+    private int autoIncreaseStartDuration = 30;
 
     @Column(nullable = false)
-    private Number autoIncreaseDurationSets = 3;
+    private int autoIncreaseDurationSets = 3;
 
     @Column(nullable = false)
-    private Number autoIncreaseCurrentSets = 3;
+    private int autoIncreaseCurrentSets = 3;
 
     @Column(nullable = false)
-    private Number autoIncreaseCurrentReps = 8;
+    private int autoIncreaseCurrentReps = 8;
 
     @Column(nullable = false)
-    private Number autoIncreaseCurrentDuration = 30;
+    private int autoIncreaseCurrentDuration = 30;
+
+    @Column(nullable = false)
+    private int autoIncreaseCurrentWeight = 20;
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -95,11 +98,11 @@ public class Exercise {
         this.name = name;
     }
 
-    public Exercise(String name, WorkoutType type, Number rest, Boolean autoIncrease, Number autoIncreaseFactor,
-            Number autoIncreaseWeightStep, Number autoIncreaseStartWeight, Number autoIncreaseMinSets,
-            Number autoIncreaseMaxSets, Number autoIncreaseMinReps, Number autoIncreaseMaxReps,
-            Number autoIncreaseStartDuration, Number autoIncreaseDurationSets, Number autoIncreaseCurrentSets,
-            Number autoIncreaseCurrentReps, Number autoIncreaseCurrentDuration) {
+    public Exercise(String name, WorkoutType type, int rest, Boolean autoIncrease, int autoIncreaseFactor,
+            int autoIncreaseWeightStep, int autoIncreaseStartWeight, int autoIncreaseMinSets,
+            int autoIncreaseMaxSets, int autoIncreaseMinReps, int autoIncreaseMaxReps,
+            int autoIncreaseStartDuration, int autoIncreaseDurationSets, int autoIncreaseCurrentSets,
+            int autoIncreaseCurrentReps, int autoIncreaseCurrentDuration) {
         this.name = name;
         this.type = type;
         this.rest = rest;
@@ -144,11 +147,11 @@ public class Exercise {
     // this.type = type;
     // }
 
-    // public Number getRest() {
+    // public int getRest() {
     // return rest;
     // }
 
-    // public void setRest(Number rest) {
+    // public void setRest(int rest) {
     // this.rest = rest;
     // }
 
@@ -160,99 +163,99 @@ public class Exercise {
     // this.autoIncrease = autoIncrease;
     // }
 
-    // public Number getAutoIncreaseFactor() {
+    // public int getAutoIncreaseFactor() {
     // return autoIncreaseFactor;
     // }
 
-    // public void setAutoIncreaseFactor(Number autoIncreaseFactor) {
+    // public void setAutoIncreaseFactor(int autoIncreaseFactor) {
     // this.autoIncreaseFactor = autoIncreaseFactor;
     // }
 
-    // public Number getAutoIncreaseWeightStep() {
+    // public int getAutoIncreaseWeightStep() {
     // return autoIncreaseWeightStep;
     // }
 
-    // public void setAutoIncreaseWeightStep(Number autoIncreaseWeightStep) {
+    // public void setAutoIncreaseWeightStep(int autoIncreaseWeightStep) {
     // this.autoIncreaseWeightStep = autoIncreaseWeightStep;
     // }
 
-    // public Number getAutoIncreaseStartWeight() {
+    // public int getAutoIncreaseStartWeight() {
     // return autoIncreaseStartWeight;
     // }
 
-    // public void setAutoIncreaseStartWeight(Number autoIncreaseStartWeight) {
+    // public void setAutoIncreaseStartWeight(int autoIncreaseStartWeight) {
     // this.autoIncreaseStartWeight = autoIncreaseStartWeight;
     // }
 
-    // public Number getAutoIncreaseMinSets() {
+    // public int getAutoIncreaseMinSets() {
     // return autoIncreaseMinSets;
     // }
 
-    // public void setAutoIncreaseMinSets(Number autoIncreaseMinSets) {
+    // public void setAutoIncreaseMinSets(int autoIncreaseMinSets) {
     // this.autoIncreaseMinSets = autoIncreaseMinSets;
     // }
 
-    // public Number getAutoIncreaseMaxSets() {
+    // public int getAutoIncreaseMaxSets() {
     // return autoIncreaseMaxSets;
     // }
 
-    // public void setAutoIncreaseMaxSets(Number autoIncreaseMaxSets) {
+    // public void setAutoIncreaseMaxSets(int autoIncreaseMaxSets) {
     // this.autoIncreaseMaxSets = autoIncreaseMaxSets;
     // }
 
-    // public Number getAutoIncreaseMin_reps() {
+    // public int getAutoIncreaseMin_reps() {
     // return autoIncreaseMin_reps;
     // }
 
-    // public void setAutoIncreaseMin_reps(Number autoIncreaseMin_reps) {
+    // public void setAutoIncreaseMin_reps(int autoIncreaseMin_reps) {
     // this.autoIncreaseMin_reps = autoIncreaseMin_reps;
     // }
 
-    // public Number getAutoIncreaseMax_reps() {
+    // public int getAutoIncreaseMax_reps() {
     // return autoIncreaseMax_reps;
     // }
 
-    // public void setAutoIncreaseMax_reps(Number autoIncreaseMax_reps) {
+    // public void setAutoIncreaseMax_reps(int autoIncreaseMax_reps) {
     // this.autoIncreaseMax_reps = autoIncreaseMax_reps;
     // }
 
-    // public Number getAutoIncreaseStartDuration() {
+    // public int getAutoIncreaseStartDuration() {
     // return autoIncreaseStartDuration;
     // }
 
-    // public void setAutoIncreaseStartDuration(Number autoIncreaseStartDuration) {
+    // public void setAutoIncreaseStartDuration(int autoIncreaseStartDuration) {
     // this.autoIncreaseStartDuration = autoIncreaseStartDuration;
     // }
 
-    // public Number getAutoIncreaseDurationSets() {
+    // public int getAutoIncreaseDurationSets() {
     // return autoIncreaseDurationSets;
     // }
 
-    // public void setAutoIncreaseDurationSets(Number autoIncreaseDurationSets) {
+    // public void setAutoIncreaseDurationSets(int autoIncreaseDurationSets) {
     // this.autoIncreaseDurationSets = autoIncreaseDurationSets;
     // }
 
-    // public Number getAutoIncreaseCurrentSets() {
+    // public int getAutoIncreaseCurrentSets() {
     // return autoIncreaseCurrentSets;
     // }
 
-    // public void setAutoIncreaseCurrentSets(Number autoIncreaseCurrentSets) {
+    // public void setAutoIncreaseCurrentSets(int autoIncreaseCurrentSets) {
     // this.autoIncreaseCurrentSets = autoIncreaseCurrentSets;
     // }
 
-    // public Number getAutoIncreaseCurrent_reps() {
+    // public int getAutoIncreaseCurrent_reps() {
     // return autoIncreaseCurrent_reps;
     // }
 
-    // public void setAutoIncreaseCurrent_reps(Number autoIncreaseCurrent_reps) {
+    // public void setAutoIncreaseCurrent_reps(int autoIncreaseCurrent_reps) {
     // this.autoIncreaseCurrent_reps = autoIncreaseCurrent_reps;
     // }
 
-    // public Number getAutoIncreaseCurrentDuration() {
+    // public int getAutoIncreaseCurrentDuration() {
     // return autoIncreaseCurrentDuration;
     // }
 
-    // public void setAutoIncreaseCurrentDuration(Number
+    // public void setAutoIncreaseCurrentDuration(int
     // autoIncreaseCurrentDuration) {
     // this.autoIncreaseCurrentDuration = autoIncreaseCurrentDuration;
     // }
@@ -278,16 +281,16 @@ public class Exercise {
         set.setExercise(this);
     }
 
-    // public void updateValuesExercise(String name, WorkoutType type, Number rest,
+    // public void updateValuesExercise(String name, WorkoutType type, int rest,
     // Boolean autoIncrease,
-    // Number autoIncreaseFactor,
-    // Number autoIncreaseWeightStep, Number autoIncreaseStartWeight, Number
+    // int autoIncreaseFactor,
+    // int autoIncreaseWeightStep, int autoIncreaseStartWeight, int
     // autoIncreaseMinSets,
-    // Number autoIncreaseMaxSets, Number autoIncreaseMin_reps, Number
+    // int autoIncreaseMaxSets, int autoIncreaseMin_reps, int
     // autoIncreaseMax_reps,
-    // Number autoIncreaseStartDuration, Number autoIncreaseDurationSets, Number
+    // int autoIncreaseStartDuration, int autoIncreaseDurationSets, int
     // autoIncreaseCurrentSets,
-    // Number autoIncreaseCurrent_reps, Number autoIncreaseCurrentDuration,
+    // int autoIncreaseCurrent_reps, int autoIncreaseCurrentDuration,
     // List<Set> sets) {
     // this.name = name;
     // this.type = type;
