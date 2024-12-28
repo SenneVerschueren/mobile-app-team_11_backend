@@ -1,5 +1,6 @@
 package mobileapplications.workoutbuilder.controller;
 
+import mobileapplications.workoutbuilder.domain.Exercise;
 import mobileapplications.workoutbuilder.domain.Workout;
 import mobileapplications.workoutbuilder.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,11 @@ public class WorkoutController {
     @PutMapping("/{id}")
     public Workout updateWorkout(@PathVariable Long id, @RequestBody WorkoutUpdateRequest updateRequest) {
         return workoutService.updateWorkout(id, updateRequest.getName(), updateRequest.getRest(), updateRequest.getExerciseIds());
+    }
+
+    @PostMapping("/{id}/addExercise")
+    public Exercise addExerciseToWorkout(@PathVariable Long id, @RequestBody Exercise exercice) {
+        return workoutService.addExerciseToWorkout(id, exercice);
     }
 
 }
