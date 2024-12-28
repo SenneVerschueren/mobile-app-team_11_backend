@@ -102,6 +102,10 @@ public class ExerciseService {
             }
         }
 
+        while (existingSets.size() > newSets.size()) {
+            existingSets.remove(existingSets.size() - 1);
+        }
+
         return exerciseRepository.save(exercise);
 
     }
