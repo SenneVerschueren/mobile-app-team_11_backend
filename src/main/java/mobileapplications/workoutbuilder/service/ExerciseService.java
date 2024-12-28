@@ -72,12 +72,12 @@ public class ExerciseService {
                 newValuesExercise.getAutoIncreaseStartWeight(),
                 newValuesExercise.getAutoIncreaseMinSets(),
                 newValuesExercise.getAutoIncreaseMaxSets(),
-                newValuesExercise.getAutoIncreaseMin_reps(),
-                newValuesExercise.getAutoIncreaseMax_reps(),
+                newValuesExercise.getAutoIncreaseMinReps(),
+                newValuesExercise.getAutoIncreaseMaxReps(),
                 newValuesExercise.getAutoIncreaseStartDuration(),
                 newValuesExercise.getAutoIncreaseDurationSets(),
                 newValuesExercise.getAutoIncreaseCurrentSets(),
-                newValuesExercise.getAutoIncreaseCurrent_reps(),
+                newValuesExercise.getAutoIncreaseCurrentReps(),
                 newValuesExercise.getAutoIncreaseCurrentDuration(),
                 newValuesExercise.getSets());
         return exerciseRepository.save(exercise);
