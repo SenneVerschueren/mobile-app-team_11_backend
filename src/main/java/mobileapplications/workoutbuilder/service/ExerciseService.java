@@ -60,10 +60,25 @@ public class ExerciseService {
         return exerciseRepository.save(exercise);
     }
 
+    /*
     public String deleteExercise(Long id) {
         String exerciseName = getExerciseById(id).getName();
         exerciseRepository.deleteById(id);
         return exerciseName + " is successfully deleted!";
+    }
+    */
+
+    public String deleteExerciseFromWorkout(Long workoutId, Long exerciseId) {
+        Workout workout = workoutService.getWorkoutById(workoutId).orElseThrow(() -> new ExerciseServiceException("Workout not found with id: " + workoutId));
+
+        Exercise exercise = getExerciseById(exerciseId);
+        if (!exercise.getWorkout().getId().equals(workoutId)) {
+            throw new ExerciseServiceException("Exercise does not belong to the specified workout");
+        }
+
+        workout.getExercises().remove(exercise);
+        exerciseRepository.deleteById(exerciseId);
+        return "Exercise successfully deleted from workout";
     }
 
     public Exercise updateExercise(Long id, Exercise newValuesExercise) {

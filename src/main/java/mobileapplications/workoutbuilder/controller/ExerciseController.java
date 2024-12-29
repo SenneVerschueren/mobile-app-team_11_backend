@@ -36,8 +36,16 @@ public class ExerciseController {
         return exerciseService.updateExercise(id, exercise);
     }
 
+    /*
     @DeleteMapping("/{id}")
     public String deleteExcercise(@PathVariable Long id) {
         return exerciseService.deleteExercise(id);
+    }
+    */
+
+    @DeleteMapping("/workout/{workoutId}/exercise/{exerciseId}")
+    public ResponseEntity<String> deleteExerciseFromWorkout(@PathVariable Long workoutId, @PathVariable Long exerciseId) {
+        String response = exerciseService.deleteExerciseFromWorkout(workoutId, exerciseId);
+        return ResponseEntity.ok(response);
     }
 }
