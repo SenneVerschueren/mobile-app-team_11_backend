@@ -7,6 +7,7 @@ import mobileapplications.workoutbuilder.exception.ExerciseServiceException;
 import mobileapplications.workoutbuilder.repository.ExerciseRepository;
 import mobileapplications.workoutbuilder.repository.SetRepository;
 
+import mobileapplications.workoutbuilder.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,15 @@ public class ExerciseService {
     private final WorkoutService workoutService;
 
     @Autowired
+    private WorkoutRepository workoutRepository;
+
+    @Autowired
     private SetRepository setRepositroy;
 
-    public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService) {
+    public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService, WorkoutRepository workoutRepository) {
         this.exerciseRepository = exerciseRepository;
         this.workoutService = workoutService;
+        this.workoutRepository = workoutRepository;
     }
 
     public List<Exercise> getAllExercises() {
@@ -40,6 +45,11 @@ public class ExerciseService {
         } else {
             throw new ExerciseServiceException("Exercise not found with id: " + id);
         }
+    }
+
+    public List<Exercise> getExercisesByWorkoutId(Long workoutId) {
+        Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+        return workout.getExercises();
     }
 
     public Exercise createExercise(Exercise exercise, Long workoutId) {
@@ -83,6 +93,8 @@ public class ExerciseService {
 
     public Exercise updateExercise(Long id, Exercise newValuesExercise) {
         Exercise exercise = getExerciseById(id);
+
+        // Update exercise values
         exercise.setName(newValuesExercise.getName());
         exercise.setType(newValuesExercise.getType());
         exercise.setRest(newValuesExercise.getRest());
@@ -100,28 +112,28 @@ public class ExerciseService {
         exercise.setAutoIncreaseCurrentReps(newValuesExercise.getAutoIncreaseCurrentReps());
         exercise.setAutoIncreaseCurrentDuration(newValuesExercise.getAutoIncreaseCurrentDuration());
 
+        // Update sets
         List<Set> existingSets = exercise.getSets();
         List<Set> newSets = newValuesExercise.getSets();
 
-        for (int i = 0; i < newSets.size(); i++) {
-            if (i < existingSets.size()) {
-                // Update existing set
-                Set existingSet = existingSets.get(i);
-                Set newSet = newSets.get(i);
-                existingSet.updateValuesSet(newSet.getReps(), newSet.getWeight(), newSet.getDuration(), exercise);
-            } else {
-                // Create new set
-                Set newSet = newSets.get(i);
+        for (Set newSet : newSets) {
+            boolean updated = false;
+            for (Set existingSet : existingSets) {
+                if (existingSet.getId().equals(newSet.getId())) {
+                    existingSet.updateValuesSet(newSet.getReps(), newSet.getWeight(), newSet.getDuration(), exercise);
+                    updated = true;
+                    break;
+                }
+            }
+            if (!updated) {
                 newSet.setExercise(exercise);
                 existingSets.add(newSet);
             }
         }
 
-        while (existingSets.size() > newSets.size()) {
-            existingSets.remove(existingSets.size() - 1);
-        }
+        // Remove sets that are not in the new list
+        existingSets.removeIf(existingSet -> newSets.stream().noneMatch(newSet -> newSet.getId().equals(existingSet.getId())));
 
         return exerciseRepository.save(exercise);
-
     }
 }

@@ -89,4 +89,8 @@ public class WorkoutService {
         // workoutRepository.save(workout);
         return exerciseRepository.save(newExercise);
     }
+
+    public List<Workout> getWorkoutsByUserId(Long userId) {
+        return workoutRepository.findWorkoutsByUserId(userId);
+    }
 }
