@@ -48,8 +48,20 @@ public class AuthService {
             throw new AuthServiceException("Email is already in use");
         }
 
+        if (!email.matches("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")) {
+            throw new AuthServiceException("Invalid email format");
+        }
+
         if (password.length() < 8) {
             throw new AuthServiceException("Password must be at least 8 characters long");
+        }
+
+        if (!password.matches(".*[0-9].*")) {
+            throw new AuthServiceException("Password must contain at least one number");
+        } else if (!password.matches(".*[a-z].*")) {
+            throw new AuthServiceException("Password must contain at least one lowercase letter");
+        } else if (!password.matches(".*[A-Z].*")) {
+            throw new AuthServiceException("Password must contain at least one uppercase letter");
         }
 
         String encodedPassword = passwordEncoder.encode(password);
