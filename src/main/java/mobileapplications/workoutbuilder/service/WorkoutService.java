@@ -78,16 +78,19 @@ public class WorkoutService {
             exercises.add(exercise);
         }
 
-        workout.setExercises(exercises);
+        workout.updateExercisesOrder(exercises);
 
         return workoutRepository.save(workout);
     }
 
     public Exercise addExerciseToWorkout(Long workoutId, Exercise exercise) {
         Workout workout = getWorkoutById(workoutId).orElseThrow(() -> new WorkoutServiceException("Workout not found with id: " + workoutId));
-        exercise.setWorkout(workout);
-        workout.addExercise(exercise);
-        workoutRepository.save(workout);
-        return exerciseRepository.save(exercise);
+        Exercise newExercise = workout.addExercise(exercise);
+        // workoutRepository.save(workout);
+        return exerciseRepository.save(newExercise);
+    }
+
+    public List<Workout> getWorkoutsByUserId(Long userId) {
+        return workoutRepository.findWorkoutsByUserId(userId);
     }
 }

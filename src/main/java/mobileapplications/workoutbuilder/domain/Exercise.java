@@ -275,13 +275,14 @@ public class Exercise {
     // return sets;
     // }
 
-    // public void setSets(List<Set> sets) {
-    // this.sets = sets;
-    // }
+    public void setSets(List<Set> sets) {
+        this.sets = sets != null ? sets : new ArrayList<>();
+    }
 
-    public void addSet(Set set) {
+    public Set addSet(Set set) {
         sets.add(set);
         set.setExercise(this);
+        return set;
     }
 
     // public void updateValuesExercise(String name, WorkoutType type, int rest,

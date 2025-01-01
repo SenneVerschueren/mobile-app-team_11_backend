@@ -40,6 +40,12 @@ public class WorkoutController {
         return workout.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Workout>> getWorkoutsByUserId(@PathVariable Long userId) {
+        List<Workout> workouts = workoutService.getWorkoutsByUserId(userId);
+        return new ResponseEntity<>(workouts, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteWorkout(@PathVariable Long id) {
         workoutService.deleteWorkout(id);

@@ -24,7 +24,7 @@ public class Workout {
     @Column(nullable = false)
     private int rest;
 
-    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Exercise> exercises = new ArrayList<>();
 
@@ -79,10 +79,11 @@ public class Workout {
         this.exercises = exercises != null ? exercises : new ArrayList<>();
     }
 
-    public void addExercise(Exercise exercise) {
+    public Exercise addExercise(Exercise exercise) {
         exercise.setOrderIndex(exercises.size());
         exercises.add(exercise);
         exercise.setWorkout(this);
+        return exercise;
     }
 
     public void updateExercisesOrder(List<Exercise> orderedExercises) {

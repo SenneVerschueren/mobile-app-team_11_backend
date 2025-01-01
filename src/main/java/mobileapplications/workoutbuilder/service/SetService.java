@@ -29,14 +29,12 @@ public class SetService {
         return setRepository.findById(id).orElse(null);
     }
 
-    public Set createSet(Set set, Long exerciseId) {
+    public Set addSetToExercise(Long exerciseId, Set set) {
         Exercise exercise = exerciseService.getExerciseById(exerciseId);
 
-        exercise.addSet(set);
+        Set newSet = exercise.addSet(set);
 
-        exerciseRepository.save(exercise);
-
-        return setRepository.save(set);
+        return setRepository.save(newSet);
     }
 
     public void deleteSet(Long id) {
