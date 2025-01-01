@@ -3,6 +3,7 @@ package mobileapplications.workoutbuilder.service;
 import mobileapplications.workoutbuilder.domain.Exercise;
 import mobileapplications.workoutbuilder.domain.Set;
 import mobileapplications.workoutbuilder.domain.Workout;
+import mobileapplications.workoutbuilder.enums.WorkoutType;
 import mobileapplications.workoutbuilder.exception.ExerciseServiceException;
 import mobileapplications.workoutbuilder.repository.ExerciseRepository;
 import mobileapplications.workoutbuilder.repository.SetRepository;
@@ -133,6 +134,90 @@ public class ExerciseService {
 
         // Remove sets that are not in the new list
         existingSets.removeIf(existingSet -> newSets.stream().noneMatch(newSet -> newSet.getId().equals(existingSet.getId())));
+
+        return exerciseRepository.save(exercise);
+    }
+
+    public Exercise autoIncrease(Long id) {
+        Exercise exercise = getExerciseById(id);
+        if (exercise.getAutoIncrease()) {
+            int currentSets = exercise.getAutoIncreaseCurrentSets();
+            int currentReps = exercise.getAutoIncreaseCurrentReps();
+            int currentDuration = exercise.getAutoIncreaseCurrentDuration();
+            int minSets = exercise.getAutoIncreaseMinSets();
+            int maxSets = exercise.getAutoIncreaseMaxSets();
+            int minReps = exercise.getAutoIncreaseMinReps();
+            int maxReps = exercise.getAutoIncreaseMaxReps();
+            int currentWeight = exercise.getAutoIncreaseCurrentWeight();
+            double weightStep = exercise.getAutoIncreaseWeightStep();
+            double factor = exercise.getAutoIncreaseFactor();
+
+            if (currentReps < maxReps) {
+                currentReps++;
+            } else {
+                currentReps = minReps;
+                if (currentSets < maxSets) {
+                    currentSets++;
+                } else {
+                    currentSets = minSets;
+                    if (exercise.getType().equals(WorkoutType.WEIGHTS)) {
+                        currentWeight += weightStep;
+                    }
+
+                }
+            }
+            if (exercise.getType().equals(WorkoutType.DURATION)) {
+                currentDuration *= factor;
+            }
+            exercise.setAutoIncreaseCurrentSets(currentSets);
+            exercise.setAutoIncreaseCurrentReps(currentReps);
+            exercise.setAutoIncreaseCurrentDuration(currentDuration);
+            exercise.setAutoIncreaseCurrentWeight(currentWeight);
+            exercise.setAutoIncreaseWeightStep(weightStep);
+            exercise.setAutoIncreaseFactor(factor);
+        }
+
+        return exerciseRepository.save(exercise);
+    }
+
+    public Exercise autoDecrease(Long id) {
+        Exercise exercise = getExerciseById(id);
+        if (exercise.getAutoIncrease()) {
+            int currentSets = exercise.getAutoIncreaseCurrentSets();
+            int currentReps = exercise.getAutoIncreaseCurrentReps();
+            int currentDuration = exercise.getAutoIncreaseCurrentDuration();
+            int minSets = exercise.getAutoIncreaseMinSets();
+            int maxSets = exercise.getAutoIncreaseMaxSets();
+            int minReps = exercise.getAutoIncreaseMinReps();
+            int maxReps = exercise.getAutoIncreaseMaxReps();
+            int currentWeight = exercise.getAutoIncreaseCurrentWeight();
+            double weightStep = exercise.getAutoIncreaseWeightStep();
+            double factor = exercise.getAutoIncreaseFactor();
+
+            if (currentReps > minReps) {
+                currentReps--;
+            } else {
+                currentReps = maxReps;
+                if (currentSets > minSets) {
+                    currentSets--;
+                } else {
+                    currentSets = maxSets;
+                    if (exercise.getType().equals(WorkoutType.WEIGHTS)) {
+                        currentWeight -= weightStep;
+                    }
+
+                }
+            }
+            if (exercise.getType().equals(WorkoutType.DURATION)) {
+                currentDuration /= factor;
+            }
+            exercise.setAutoIncreaseCurrentSets(currentSets);
+            exercise.setAutoIncreaseCurrentReps(currentReps);
+            exercise.setAutoIncreaseCurrentDuration(currentDuration);
+            exercise.setAutoIncreaseCurrentWeight(currentWeight);
+            exercise.setAutoIncreaseWeightStep(weightStep);
+            exercise.setAutoIncreaseFactor(factor);
+        }
 
         return exerciseRepository.save(exercise);
     }

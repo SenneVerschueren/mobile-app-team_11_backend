@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/exercises")
@@ -23,6 +26,17 @@ public class ExerciseController {
     @GetMapping
     public List<Exercise> getAllExercises() {
         return exerciseService.getAllExercises();
+    }
+
+    @PostMapping
+    public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise, @RequestParam Long workoutId) {
+        // if only name is provided, create an exercise with the name
+        if (exercise.getName() != null && exercise.getType() == null) {
+            Exercise createdExercise = exerciseService.createExerciseByName(exercise.getName());
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdExercise);
+        }
+        Exercise createdExercise = exerciseService.createExercise(exercise, workoutId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdExercise);
     }
 
     @GetMapping("/{id}")
@@ -53,5 +67,15 @@ public class ExerciseController {
     public ResponseEntity<String> deleteExerciseFromWorkout(@PathVariable Long workoutId, @PathVariable Long exerciseId) {
         String response = exerciseService.deleteExerciseFromWorkout(workoutId, exerciseId);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/increase/{id}")
+    public Exercise autoIncrease(@PathVariable Long id) {
+        return exerciseService.autoIncrease(id);
+    }
+
+    @PutMapping("/decrease/{id}")
+    public Exercise autoDecrease(@PathVariable Long id) {
+        return exerciseService.autoDecrease(id);
     }
 }
