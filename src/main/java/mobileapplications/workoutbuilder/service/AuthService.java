@@ -44,6 +44,10 @@ public class AuthService {
             throw new AuthServiceException("Name, email, and password are required");
         }
 
+        if (!name.matches("^[a-zA-Z ]+$")) {
+            throw new AuthServiceException("Name can only contain letters and spaces");
+        }
+
         if (userRepository.findByEmail(email) != null) {
             throw new AuthServiceException("Email is already in use");
         }
