@@ -29,10 +29,9 @@ public class SetController {
         return ResponseEntity.ok(set);
     }
 
-    @PostMapping
-    public ResponseEntity<Set> createSet(@RequestBody Set set, @RequestParam Long exerciseId) {
-        Set createdSet = setService.createSet(set, exerciseId);
-        return ResponseEntity.ok(createdSet);
+    @PostMapping("/exercise/{exerciseId}/addSet")
+    public Set addSetToExercise(@PathVariable Long exerciseId, @RequestBody Set set) {
+        return setService.addSetToExercise(exerciseId, set);
     }
 
     // Update a set

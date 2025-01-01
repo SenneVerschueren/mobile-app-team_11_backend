@@ -31,13 +31,27 @@ public class ExerciseController {
         return ResponseEntity.ok(exercise);
     }
 
+    @GetMapping("/workout/{workoutId}")
+    public ResponseEntity<List<Exercise>> getExercisesByWorkoutId(@PathVariable Long workoutId) {
+        List<Exercise> exercises = exerciseService.getExercisesByWorkoutId(workoutId);
+        return new ResponseEntity<>(exercises, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public Exercise updateExercise(@PathVariable Long id, @RequestBody Exercise exercise) {
         return exerciseService.updateExercise(id, exercise);
     }
 
+    /*
     @DeleteMapping("/{id}")
     public String deleteExcercise(@PathVariable Long id) {
         return exerciseService.deleteExercise(id);
+    }
+    */
+
+    @DeleteMapping("/workout/{workoutId}/exercise/{exerciseId}")
+    public ResponseEntity<String> deleteExerciseFromWorkout(@PathVariable Long workoutId, @PathVariable Long exerciseId) {
+        String response = exerciseService.deleteExerciseFromWorkout(workoutId, exerciseId);
+        return ResponseEntity.ok(response);
     }
 }

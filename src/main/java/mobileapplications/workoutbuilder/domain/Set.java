@@ -33,11 +33,10 @@ public class Set {
     public Set() {
     }
 
-    public Set(int reps, int weight, int duration, Exercise exercise) {
+    public Set(int reps, int weight, int duration) {
         this.reps = reps;
         this.weight = weight;
         this.duration = duration;
-        this.exercise = exercise;
     }
 
     public Long getId() {
