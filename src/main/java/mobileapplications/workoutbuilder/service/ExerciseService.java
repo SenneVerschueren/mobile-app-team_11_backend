@@ -158,12 +158,7 @@ public class ExerciseService {
             double factor = exercise.getAutoIncreaseFactor();
 
             if (exercise.getType().equals(WorkoutType.DURATION)) {
-                currentSets = addRepsAndSets(currentSets, factor);
-                if (currentSets >= maxSets) {
-                    currentSets = minSets;
-                    currentDuration = addDuration(currentDuration, factor);
-                }
-
+                currentDuration = addDuration(currentDuration, factor);
             } else {
                 currentReps = addRepsAndSets(currentReps, factor);
 
@@ -183,13 +178,14 @@ public class ExerciseService {
                         }
                     }
                 }
-                exercise.setAutoIncreaseCurrentSets(currentSets);
-                exercise.setAutoIncreaseCurrentReps(currentReps);
-                exercise.setAutoIncreaseCurrentDuration(currentDuration);
-                exercise.setAutoIncreaseCurrentWeight(currentWeight);
-                exercise.setAutoIncreaseWeightStep(weightStep);
-                exercise.setAutoIncreaseFactor(factor);
+
             }
+            exercise.setAutoIncreaseCurrentSets(currentSets);
+            exercise.setAutoIncreaseCurrentReps(currentReps);
+            exercise.setAutoIncreaseCurrentDuration(currentDuration);
+            exercise.setAutoIncreaseCurrentWeight(currentWeight);
+            exercise.setAutoIncreaseWeightStep(weightStep);
+            exercise.setAutoIncreaseFactor(factor);
         }
         return exerciseRepository.save(exercise);
     }
@@ -199,6 +195,7 @@ public class ExerciseService {
     }
 
     public int addDuration(int value, double multiplier) {
+        System.out.println("add duration " + Math.max(value + 5, (int) Math.round(value * multiplier)));
         return Math.max(value + 5, (int) Math.round(value * multiplier));
     }
 
@@ -248,13 +245,13 @@ public class ExerciseService {
                         }
                     }
                 }
-                exercise.setAutoIncreaseCurrentSets(currentSets);
-                exercise.setAutoIncreaseCurrentReps(currentReps);
-                exercise.setAutoIncreaseCurrentDuration(currentDuration);
-                exercise.setAutoIncreaseCurrentWeight(currentWeight);
-                exercise.setAutoIncreaseWeightStep(weightStep);
-                exercise.setAutoIncreaseFactor(factor);
             }
+            exercise.setAutoIncreaseCurrentSets(currentSets);
+            exercise.setAutoIncreaseCurrentReps(currentReps);
+            exercise.setAutoIncreaseCurrentDuration(currentDuration);
+            exercise.setAutoIncreaseCurrentWeight(currentWeight);
+            exercise.setAutoIncreaseWeightStep(weightStep);
+            exercise.setAutoIncreaseFactor(factor);
         }
         return exerciseRepository.save(exercise);
     }
