@@ -54,7 +54,7 @@ public class Exercise {
     private double autoIncreaseWeightStep = 2.5;
 
     @Column(nullable = false)
-    private int autoIncreaseStartWeight = 20;
+    private double autoIncreaseStartWeight = 20;
 
     @Column(nullable = false)
     private int autoIncreaseMinSets = 3;
@@ -84,7 +84,7 @@ public class Exercise {
     private int autoIncreaseCurrentDuration = 30;
 
     @Column(nullable = false)
-    private int autoIncreaseCurrentWeight = 20;
+    private double autoIncreaseCurrentWeight = 20;
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -101,7 +101,7 @@ public class Exercise {
     }
 
     public Exercise(String name, WorkoutType type, int rest, Boolean autoIncrease, int autoIncreaseFactor,
-            int autoIncreaseWeightStep, int autoIncreaseStartWeight, int autoIncreaseMinSets,
+            double autoIncreaseWeightStep, double autoIncreaseStartWeight, int autoIncreaseMinSets,
             int autoIncreaseMaxSets, int autoIncreaseMinReps, int autoIncreaseMaxReps,
             int autoIncreaseStartDuration, int autoIncreaseDurationSets, int autoIncreaseCurrentSets,
             int autoIncreaseCurrentReps, int autoIncreaseCurrentDuration) {
