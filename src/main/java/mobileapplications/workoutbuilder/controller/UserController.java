@@ -3,6 +3,7 @@ package mobileapplications.workoutbuilder.controller;
 import mobileapplications.workoutbuilder.domain.User;
 import mobileapplications.workoutbuilder.domain.Workout;
 import mobileapplications.workoutbuilder.exception.UserServiceException;
+import mobileapplications.workoutbuilder.service.AuthService;
 import mobileapplications.workoutbuilder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,12 @@ public class UserController {
     @Autowired
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    @Autowired
+    private final AuthService authService;
+
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
     // Get all users
@@ -51,5 +56,31 @@ public class UserController {
     @PutMapping("/{email}")
     public User updateUser(@PathVariable String email, @RequestBody User user) {
         return userService.updateUser(email, user);
+    }
+
+    @PutMapping("/{id}/password")
+    public User updatePassword(@PathVariable Long id, @RequestBody UpdatePasswordRequest passwordRequest) {
+        return authService.updatePassword(id, passwordRequest.getCurrentPassword(), passwordRequest.getNewPassword());
+    }
+}
+
+class UpdatePasswordRequest {
+    private String currentPassword;
+    private String newPassword;
+
+    public String getCurrentPassword() {
+        return currentPassword;
+    }
+
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 }

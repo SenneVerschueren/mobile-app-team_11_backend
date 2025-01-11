@@ -3,6 +3,7 @@ package mobileapplications.workoutbuilder.service;
 import mobileapplications.workoutbuilder.security.JwtUtil;
 import mobileapplications.workoutbuilder.domain.User;
 import mobileapplications.workoutbuilder.exception.AuthServiceException;
+import mobileapplications.workoutbuilder.exception.UserServiceException;
 import mobileapplications.workoutbuilder.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,10 +57,19 @@ public class AuthService {
             throw new AuthServiceException("Invalid email format");
         }
 
+        if (!isPasswordComplexEnough(password)) {
+            throw new AuthServiceException("Password is not complex enough");
+        }
+
+        String encodedPassword = passwordEncoder.encode(password);
+
+        return userService.createUser(name, email, encodedPassword);
+    }
+
+    public Boolean isPasswordComplexEnough(String password) {
         if (password.length() < 8) {
             throw new AuthServiceException("Password must be at least 8 characters long");
         }
-
         if (!password.matches(".*[0-9].*")) {
             throw new AuthServiceException("Password must contain at least one number");
         } else if (!password.matches(".*[a-z].*")) {
@@ -68,8 +78,35 @@ public class AuthService {
             throw new AuthServiceException("Password must contain at least one uppercase letter");
         }
 
-        String encodedPassword = passwordEncoder.encode(password);
+        return true;
+    }
 
-        return userService.createUser(name, email, encodedPassword);
+    public User updatePassword(Long id, String currentPassword, String newPassword) {
+        User user = userService.getUserById(id);
+
+        if (user == null) {
+            throw new UserServiceException("User not found with ID: " + id);
+        }
+
+        if (!verifyPassword(id, currentPassword)) {
+            throw new UserServiceException("Invalid password");
+        }
+
+        if (!isPasswordComplexEnough(newPassword)) {
+            throw new UserServiceException("Password is not complex enough");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        return userRepository.save(user);
+    }
+
+    public Boolean verifyPassword(Long userId, String password) {
+        User user = userService.getUserById(userId);
+        
+        if (user == null) {
+            throw new AuthServiceException("User not found with ID: " + userId);
+        }
+        
+        return passwordEncoder.matches(password, user.getPassword());
     }
 }
