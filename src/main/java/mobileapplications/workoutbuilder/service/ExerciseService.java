@@ -29,7 +29,8 @@ public class ExerciseService {
     @Autowired
     private SetRepository setRepositroy;
 
-    public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService, WorkoutRepository workoutRepository) {
+    public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService,
+            WorkoutRepository workoutRepository) {
         this.exerciseRepository = exerciseRepository;
         this.workoutService = workoutService;
         this.workoutRepository = workoutRepository;
@@ -49,7 +50,8 @@ public class ExerciseService {
     }
 
     public List<Exercise> getExercisesByWorkoutId(Long workoutId) {
-        Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> new RuntimeException("Workout not found"));
+        Workout workout = workoutRepository.findById(workoutId)
+                .orElseThrow(() -> new RuntimeException("Workout not found"));
         return workout.getExercises();
     }
 
@@ -72,15 +74,16 @@ public class ExerciseService {
     }
 
     /*
-    public String deleteExercise(Long id) {
-        String exerciseName = getExerciseById(id).getName();
-        exerciseRepository.deleteById(id);
-        return exerciseName + " is successfully deleted!";
-    }
-    */
+     * public String deleteExercise(Long id) {
+     * String exerciseName = getExerciseById(id).getName();
+     * exerciseRepository.deleteById(id);
+     * return exerciseName + " is successfully deleted!";
+     * }
+     */
 
     public String deleteExerciseFromWorkout(Long workoutId, Long exerciseId) {
-        Workout workout = workoutService.getWorkoutById(workoutId).orElseThrow(() -> new ExerciseServiceException("Workout not found with id: " + workoutId));
+        Workout workout = workoutService.getWorkoutById(workoutId)
+                .orElseThrow(() -> new ExerciseServiceException("Workout not found with id: " + workoutId));
 
         Exercise exercise = getExerciseById(exerciseId);
         if (!exercise.getWorkout().getId().equals(workoutId)) {
@@ -134,7 +137,8 @@ public class ExerciseService {
         }
 
         // Remove sets that are not in the new list
-        existingSets.removeIf(existingSet -> newSets.stream().noneMatch(newSet -> newSet.getId().equals(existingSet.getId())));
+        existingSets.removeIf(
+                existingSet -> newSets.stream().noneMatch(newSet -> newSet.getId().equals(existingSet.getId())));
 
         return exerciseRepository.save(exercise);
     }
@@ -149,26 +153,32 @@ public class ExerciseService {
             int maxSets = exercise.getAutoIncreaseMaxSets();
             int minReps = exercise.getAutoIncreaseMinReps();
             int maxReps = exercise.getAutoIncreaseMaxReps();
-            int currentWeight = exercise.getAutoIncreaseCurrentWeight();
+            double currentWeight = exercise.getAutoIncreaseCurrentWeight();
             double weightStep = exercise.getAutoIncreaseWeightStep();
             double factor = exercise.getAutoIncreaseFactor();
 
-            if (currentReps < maxReps) {
-                currentReps++;
-            } else {
-                currentReps = minReps;
-                if (currentSets < maxSets) {
-                    currentSets++;
-                } else {
-                    currentSets = minSets;
-                    if (exercise.getType().equals(WorkoutType.WEIGHTS)) {
-                        currentWeight += weightStep;
-                    }
-
-                }
-            }
             if (exercise.getType().equals(WorkoutType.DURATION)) {
-                currentDuration *= factor;
+                currentDuration = addDuration(currentDuration, factor);
+            } else {
+                currentReps = addRepsAndSets(currentReps, factor);
+
+                if (currentReps >= maxReps) {
+                    currentReps = minReps;
+                    currentSets = addRepsAndSets(currentSets, factor);
+
+                    if (exercise.getType().equals(WorkoutType.WEIGHTS)) {
+                        if (currentSets >= maxSets) {
+                            currentSets = minSets;
+                            currentWeight = addWeight(currentWeight, factor, weightStep);
+                        }
+                    }
+                    if (exercise.getType().equals(WorkoutType.BODYWEIGHT)) {
+                        if (currentSets >= maxSets) {
+                            currentSets = maxSets;
+                        }
+                    }
+                }
+
             }
             exercise.setAutoIncreaseCurrentSets(currentSets);
             exercise.setAutoIncreaseCurrentReps(currentReps);
@@ -177,8 +187,22 @@ public class ExerciseService {
             exercise.setAutoIncreaseWeightStep(weightStep);
             exercise.setAutoIncreaseFactor(factor);
         }
-
         return exerciseRepository.save(exercise);
+    }
+
+    public int addRepsAndSets(int value, double multiplier) {
+        return Math.max(value + 1, (int) Math.round(value * multiplier));
+    }
+
+    public int addDuration(int value, double multiplier) {
+        System.out.println("add duration " + Math.max(value + 5, (int) Math.round(value * multiplier)));
+        return Math.max(value + 5, (int) Math.round(value * multiplier));
+    }
+
+    public double addWeight(double value, double multiplier, double weightStep) {
+        double newWeight = value * multiplier;
+
+        return Math.ceil(newWeight / weightStep) * weightStep;
     }
 
     public Exercise autoDecrease(Long id) {
@@ -191,26 +215,36 @@ public class ExerciseService {
             int maxSets = exercise.getAutoIncreaseMaxSets();
             int minReps = exercise.getAutoIncreaseMinReps();
             int maxReps = exercise.getAutoIncreaseMaxReps();
-            int currentWeight = exercise.getAutoIncreaseCurrentWeight();
+            double currentWeight = exercise.getAutoIncreaseCurrentWeight();
             double weightStep = exercise.getAutoIncreaseWeightStep();
             double factor = exercise.getAutoIncreaseFactor();
 
-            if (currentReps > minReps) {
-                currentReps--;
-            } else {
-                currentReps = maxReps;
-                if (currentSets > minSets) {
-                    currentSets--;
-                } else {
-                    currentSets = maxSets;
-                    if (exercise.getType().equals(WorkoutType.WEIGHTS)) {
-                        currentWeight -= weightStep;
-                    }
-
-                }
-            }
             if (exercise.getType().equals(WorkoutType.DURATION)) {
-                currentDuration /= factor;
+                currentSets = subtractRepsAndSets(currentSets, factor);
+                if (currentSets <= minSets) {
+                    currentSets = maxSets;
+                    currentDuration = subtractDuration(currentDuration, factor);
+                }
+
+            } else {
+                currentReps = subtractRepsAndSets(currentReps, factor);
+
+                if (currentReps <= minReps) {
+                    currentReps = maxReps;
+                    currentSets = subtractRepsAndSets(currentSets, factor);
+
+                    if (exercise.getType().equals(WorkoutType.WEIGHTS)) {
+                        if (currentSets <= minSets) {
+                            currentSets = maxSets;
+                            currentWeight = subtractWeight(currentWeight, factor, weightStep);
+                        }
+                    }
+                    if (exercise.getType().equals(WorkoutType.BODYWEIGHT)) {
+                        if (currentSets <= minSets) {
+                            currentSets = minSets;
+                        }
+                    }
+                }
             }
             exercise.setAutoIncreaseCurrentSets(currentSets);
             exercise.setAutoIncreaseCurrentReps(currentReps);
@@ -219,7 +253,20 @@ public class ExerciseService {
             exercise.setAutoIncreaseWeightStep(weightStep);
             exercise.setAutoIncreaseFactor(factor);
         }
-
         return exerciseRepository.save(exercise);
+    }
+
+    public int subtractRepsAndSets(int value, double multiplier) {
+        return Math.max(value - 1, (int) Math.round(value / multiplier));
+    }
+
+    public int subtractDuration(int value, double multiplier) {
+        return Math.max(value - 5, (int) Math.round(value / multiplier));
+    }
+
+    public double subtractWeight(double value, double multiplier, double weightStep) {
+        double newWeight = value / multiplier;
+
+        return Math.floor(newWeight / weightStep) * weightStep;
     }
 }
