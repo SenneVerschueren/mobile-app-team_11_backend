@@ -5,6 +5,7 @@ import mobileapplications.workoutbuilder.domain.Workout;
 import mobileapplications.workoutbuilder.exception.UserServiceException;
 import mobileapplications.workoutbuilder.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,5 +77,41 @@ public class UserService {
         user.updateValuesUser(newValuesUser.getName(), newValuesUser.getEmail(), newValuesUser.getPassword());
 
         return userRepository.save(user);
+    }
+
+    public void completedWorkout(Long userId) {
+        User user = getUserById(userId);
+        if (user == null) {
+            throw new UserServiceException("User not found with ID: " + userId);
+        }
+        user.setStreakProgress(user.getStreakProgress() + 1);
+        userRepository.save(user);
+    }
+
+    @Scheduled(cron = "0 0 0 * * SUN")
+    public void validateStreaks() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if (user.getStreakGoal() <= user.getStreakProgress()) {
+                user.setStreakProgress(0);
+                user.setStreak(user.getStreak() + 1);
+            } else {
+                user.setStreakProgress(0);
+            }
+            userRepository.save(user);
+        }
+    }
+
+    public void updateStreakGoal(Long userId, Integer streakGoal) {
+        User user = getUserById(userId);
+        if (user == null) {
+            throw new UserServiceException("User not found with ID: " + userId);
+        } else if (streakGoal < 0) {
+            throw new UserServiceException("Streak goal must be at least 0");
+        } else if (streakGoal > 7) {
+            throw new UserServiceException("Streak goal must be at most 7");
+        }
+        user.setStreakGoal(streakGoal);
+        userRepository.save(user);
     }
 }
