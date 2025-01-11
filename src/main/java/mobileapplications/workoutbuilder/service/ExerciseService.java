@@ -114,6 +114,7 @@ public class ExerciseService {
         exercise.setAutoIncreaseDurationSets(newValuesExercise.getAutoIncreaseDurationSets());
         exercise.setAutoIncreaseCurrentSets(newValuesExercise.getAutoIncreaseCurrentSets());
         exercise.setAutoIncreaseCurrentReps(newValuesExercise.getAutoIncreaseCurrentReps());
+        exercise.setAutoIncreaseCurrentWeight(newValuesExercise.getAutoIncreaseCurrentWeight());
         exercise.setAutoIncreaseCurrentDuration(newValuesExercise.getAutoIncreaseCurrentDuration());
 
         // Update sets
