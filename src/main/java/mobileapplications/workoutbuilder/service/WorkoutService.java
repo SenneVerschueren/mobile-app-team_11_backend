@@ -83,10 +83,10 @@ public class WorkoutService {
         return workoutRepository.save(workout);
     }
 
-    public Exercise addExerciseToWorkout(Long workoutId, Exercise exercise) {
+    public Exercise addExerciseToWorkout(Long workoutId, Exercise exercise, String goal) {
         Workout workout = getWorkoutById(workoutId).orElseThrow(() -> new WorkoutServiceException("Workout not found with id: " + workoutId));
-        Exercise newExercise = workout.addExercise(exercise);
-        // workoutRepository.save(workout);
+        Exercise newExercise = new Exercise(exercise.getName(), exercise.getType(), goal);
+        newExercise = workout.addExercise(newExercise);
         return exerciseRepository.save(newExercise);
     }
 

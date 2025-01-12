@@ -42,11 +42,11 @@ public class User {
     @JsonManagedReference
     private List<Workout> workouts;
 
-    private Integer streakGoal;
+    private Integer streakGoal = 0;
 
-    private Integer streakProgress;
+    private Integer streakProgress = 0;
 
-    private Integer streak;
+    private Integer streak = 0;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
@@ -61,9 +61,6 @@ public class User {
         this.email = email;
         this.password = password;
         this.workouts = Collections.emptyList();
-        this.streakGoal = 1;
-        this.streakProgress = 0;
-        this.streak = 0;
     }
 
     // Getters and Setters
