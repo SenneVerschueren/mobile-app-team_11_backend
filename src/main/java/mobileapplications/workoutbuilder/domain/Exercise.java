@@ -48,7 +48,7 @@ public class Exercise {
     private Boolean autoIncrease = true;
 
     @Column(nullable = false)
-    private double autoIncreaseFactor = 1.25;
+    private double autoIncreaseFactor = 1.05;
 
     @Column(nullable = false)
     private double autoIncreaseWeightStep = 2.5;

@@ -91,12 +91,19 @@ public class UserService {
     @Scheduled(cron = "0 0 0 * * SUN")
     public void validateStreaks() {
         List<User> users = userRepository.findAll();
+        System.out.println("Validating streaks for all users, usercount: " + users.size());
         for (User user : users) {
-            if (user.getStreakGoal() <= user.getStreakProgress()) {
+            System.out.println("Validating streak for user: " + user.getName());
+            if (user.getStreakGoal() == 0) {
+                System.out.println("Streak goal is 0, skipping validation");
+            } else if (user.getStreakGoal() <= user.getStreakProgress()) {
+                System.out.println("Streak goal reached, resetting progress");
                 user.setStreakProgress(0);
                 user.setStreak(user.getStreak() + 1);
             } else {
+                System.out.println("Streak goal not reached, resetting progress and streak");
                 user.setStreakProgress(0);
+                user.setStreak(0);
             }
             userRepository.save(user);
         }
