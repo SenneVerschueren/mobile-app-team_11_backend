@@ -1,17 +1,24 @@
 package mobileapplications.workoutbuilder.service;
 
 import mobileapplications.workoutbuilder.domain.Exercise;
+import mobileapplications.workoutbuilder.domain.Progress;
 import mobileapplications.workoutbuilder.domain.Set;
 import mobileapplications.workoutbuilder.domain.Workout;
 import mobileapplications.workoutbuilder.enums.WorkoutType;
 import mobileapplications.workoutbuilder.exception.ExerciseServiceException;
 import mobileapplications.workoutbuilder.repository.ExerciseRepository;
+import mobileapplications.workoutbuilder.repository.ProgressRepository;
 import mobileapplications.workoutbuilder.repository.SetRepository;
 
 import mobileapplications.workoutbuilder.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,11 +36,15 @@ public class ExerciseService {
     @Autowired
     private SetRepository setRepositroy;
 
+    @Autowired
+    private ProgressRepository progressRepository;
+
     public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService,
-            WorkoutRepository workoutRepository) {
+            WorkoutRepository workoutRepository, ProgressRepository progressRepository) {
         this.exerciseRepository = exerciseRepository;
         this.workoutService = workoutService;
         this.workoutRepository = workoutRepository;
+        this.progressRepository = progressRepository;
     }
 
     public List<Exercise> getAllExercises() {
@@ -136,6 +147,16 @@ public class ExerciseService {
             }
         }
 
+        if (exercise.getAutoIncrease() && exercise.getProgressList().size() <= 0) {
+            if (exercise.getAutoIncrease() && exercise.getType().equals(WorkoutType.WEIGHTS)) {
+                addProgressWeight(exercise.getId(), exercise.getAutoIncreaseStartWeight(),
+                        new Date());
+            } else if (exercise.getAutoIncrease() && exercise.getType().equals(WorkoutType.DURATION)) {
+                addProgressDuration(exercise.getId(), exercise.getAutoIncreaseStartDuration(),
+                        new Date());
+            }
+        }
+
         // Remove sets that are not in the new list
         existingSets.removeIf(
                 existingSet -> newSets.stream().noneMatch(newSet -> newSet.getId().equals(existingSet.getId())));
@@ -159,6 +180,8 @@ public class ExerciseService {
 
             if (exercise.getType().equals(WorkoutType.DURATION)) {
                 currentDuration = addDuration(currentDuration, factor);
+                addProgressDuration(id, currentDuration, new Date());
+
             } else {
                 currentReps = addRepsAndSets(currentReps, factor);
 
@@ -170,6 +193,7 @@ public class ExerciseService {
                         if (currentSets >= maxSets) {
                             currentSets = minSets;
                             currentWeight = addWeight(currentWeight, factor, weightStep);
+                            addProgressWeight(id, currentWeight, new Date());
                         }
                     }
                     if (exercise.getType().equals(WorkoutType.BODYWEIGHT)) {
@@ -186,6 +210,7 @@ public class ExerciseService {
             exercise.setAutoIncreaseCurrentWeight(currentWeight);
             exercise.setAutoIncreaseWeightStep(weightStep);
             exercise.setAutoIncreaseFactor(factor);
+
         }
         return exerciseRepository.save(exercise);
     }
@@ -220,11 +245,8 @@ public class ExerciseService {
             double factor = exercise.getAutoIncreaseFactor();
 
             if (exercise.getType().equals(WorkoutType.DURATION)) {
-                currentSets = subtractRepsAndSets(currentSets, factor);
-                if (currentSets <= minSets) {
-                    currentSets = maxSets;
-                    currentDuration = subtractDuration(currentDuration, factor);
-                }
+                currentDuration = subtractDuration(currentDuration, factor);
+                addProgressDuration(id, currentDuration, new Date());
 
             } else {
                 currentReps = subtractRepsAndSets(currentReps, factor);
@@ -237,6 +259,7 @@ public class ExerciseService {
                         if (currentSets <= minSets) {
                             currentSets = maxSets;
                             currentWeight = subtractWeight(currentWeight, factor, weightStep);
+                            addProgressWeight(id, currentWeight, new Date());
                         }
                     }
                     if (exercise.getType().equals(WorkoutType.BODYWEIGHT)) {
@@ -252,8 +275,11 @@ public class ExerciseService {
             exercise.setAutoIncreaseCurrentWeight(currentWeight);
             exercise.setAutoIncreaseWeightStep(weightStep);
             exercise.setAutoIncreaseFactor(factor);
+
         }
+
         return exerciseRepository.save(exercise);
+
     }
 
     public int subtractRepsAndSets(int value, double multiplier) {
@@ -268,5 +294,44 @@ public class ExerciseService {
         double newWeight = value / multiplier;
 
         return Math.floor(newWeight / weightStep) * weightStep;
+    }
+
+    @Transactional
+    public Progress addProgressWeight(Long exerciseId, double weight, Date date) {
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new EntityNotFoundException("Exercise not found"));
+
+        Progress progress = new Progress(weight, date);
+        progress.setExercise(exercise);
+        exercise.addProgress(progress);
+
+        exerciseRepository.save(exercise);
+
+        return progress;
+    }
+
+    @Transactional
+    public Progress addProgressDuration(Long exerciseId, int duration, Date date) {
+        Exercise exercise = exerciseRepository.findById(exerciseId)
+                .orElseThrow(() -> new EntityNotFoundException("Exercise not found"));
+
+        Progress progress = new Progress(duration, date);
+        progress.setExercise(exercise);
+        exercise.addProgress(progress);
+
+        exerciseRepository.save(exercise);
+
+        return progress;
+    }
+
+    public List<Exercise> getExercisesByUserId(Long userId) {
+        List<Exercise> exercises = exerciseRepository.findByUserId(userId);
+
+        if (exercises != null && !exercises.isEmpty()) {
+            System.out.println("exercises: " + exercises.get(0).getProgressList());
+            return exercises;
+        } else {
+            return new ArrayList<Exercise>();
+        }
     }
 }
