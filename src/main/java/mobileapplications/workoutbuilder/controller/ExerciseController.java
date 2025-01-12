@@ -8,9 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/exercises")
@@ -57,14 +54,15 @@ public class ExerciseController {
     }
 
     /*
-    @DeleteMapping("/{id}")
-    public String deleteExcercise(@PathVariable Long id) {
-        return exerciseService.deleteExercise(id);
-    }
-    */
+     * @DeleteMapping("/{id}")
+     * public String deleteExcercise(@PathVariable Long id) {
+     * return exerciseService.deleteExercise(id);
+     * }
+     */
 
     @DeleteMapping("/workout/{workoutId}/exercise/{exerciseId}")
-    public ResponseEntity<String> deleteExerciseFromWorkout(@PathVariable Long workoutId, @PathVariable Long exerciseId) {
+    public ResponseEntity<String> deleteExerciseFromWorkout(@PathVariable Long workoutId,
+            @PathVariable Long exerciseId) {
         String response = exerciseService.deleteExerciseFromWorkout(workoutId, exerciseId);
         return ResponseEntity.ok(response);
     }
@@ -78,4 +76,10 @@ public class ExerciseController {
     public Exercise autoDecrease(@PathVariable Long id) {
         return exerciseService.autoDecrease(id);
     }
+
+    @GetMapping("/user/{userId}")
+    public List<Exercise> getExercisesByUserId(@PathVariable Long userId) {
+        return exerciseService.getExercisesByUserId(userId);
+    }
+
 }
