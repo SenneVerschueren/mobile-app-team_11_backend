@@ -57,9 +57,9 @@ public class WorkoutController {
         return workoutService.updateWorkout(id, updateRequest.getName(), updateRequest.getRest(), updateRequest.getExerciseIds());
     }
 
-    @PostMapping("/{id}/addExercise")
-    public Exercise addExerciseToWorkout(@PathVariable Long id, @RequestBody Exercise exercice) {
-        return workoutService.addExerciseToWorkout(id, exercice);
+    @PostMapping("/{id}/addExercise/{goal}")
+    public Exercise addExerciseToWorkout(@PathVariable Long id, @RequestBody Exercise exercice, @PathVariable String goal) {
+        return workoutService.addExerciseToWorkout(id, exercice, goal);
     }
 
 }

@@ -100,6 +100,60 @@ public class Exercise {
         this.name = name;
     }
 
+    public Exercise(String name, WorkoutType type, String goal) {
+        this.name = name;
+        this.type = type;
+        if (type != WorkoutType.DURATION){
+            switch (goal) {
+                case "POWER":
+                    this.rest = 240;
+                    this.autoIncrease = true;
+                    this.autoIncreaseFactor = 1.05;
+                    this.autoIncreaseWeightStep = 2.5;
+                    this.autoIncreaseStartWeight = 40;
+                    this.autoIncreaseMinSets = 3;
+                    this.autoIncreaseMaxSets = 4;
+                    this.autoIncreaseMinReps = 2;
+                    this.autoIncreaseMaxReps = 8;
+                    this.autoIncreaseCurrentSets = 3;
+                    this.autoIncreaseCurrentReps = 2;
+                    this.autoIncreaseCurrentWeight = 40;
+                    break;
+                case "MUSCLE":
+                    this.rest = 180;
+                    this.autoIncrease = true;
+                    this.autoIncreaseFactor = 1.1;
+                    this.autoIncreaseWeightStep = 2.5;
+                    this.autoIncreaseStartWeight = 20;
+                    this.autoIncreaseMinSets = 3;
+                    this.autoIncreaseMaxSets = 4;
+                    this.autoIncreaseMinReps = 8;
+                    this.autoIncreaseMaxReps = 15;
+                    this.autoIncreaseCurrentSets = 3;
+                    this.autoIncreaseCurrentReps = 8;
+                    this.autoIncreaseCurrentWeight = 20;
+                    break;
+                case "ENDURANCE":
+                    this.rest = 90;
+                    this.autoIncrease = true;
+                    this.autoIncreaseFactor = 1.15;
+                    this.autoIncreaseWeightStep = 2.5;
+                    this.autoIncreaseStartWeight = 10;
+                    this.autoIncreaseMinSets = 3;
+                    this.autoIncreaseMaxSets = 4;
+                    this.autoIncreaseMinReps = 12;
+                    this.autoIncreaseMaxReps = 20;
+                    this.autoIncreaseCurrentSets = 3;
+                    this.autoIncreaseCurrentReps = 12;
+                    this.autoIncreaseCurrentWeight = 10;
+                    break;
+                default:
+                    break;
+            } 
+        }
+        
+    }
+
     public Exercise(String name, WorkoutType type, int rest, Boolean autoIncrease, int autoIncreaseFactor,
             double autoIncreaseWeightStep, double autoIncreaseStartWeight, int autoIncreaseMinSets,
             int autoIncreaseMaxSets, int autoIncreaseMinReps, int autoIncreaseMaxReps,
