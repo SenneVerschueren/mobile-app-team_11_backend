@@ -45,7 +45,7 @@ public class Exercise {
     private int rest = 60;
 
     @Column(nullable = false)
-    private Boolean autoIncrease = false;
+    private Boolean autoIncrease = true;
 
     @Column(nullable = false)
     private double autoIncreaseFactor = 1.25;
@@ -107,7 +107,6 @@ public class Exercise {
             switch (goal) {
                 case "POWER":
                     this.rest = 240;
-                    this.autoIncrease = true;
                     this.autoIncreaseFactor = 1.05;
                     this.autoIncreaseWeightStep = 2.5;
                     this.autoIncreaseStartWeight = 40;
@@ -121,7 +120,6 @@ public class Exercise {
                     break;
                 case "MUSCLE":
                     this.rest = 180;
-                    this.autoIncrease = true;
                     this.autoIncreaseFactor = 1.1;
                     this.autoIncreaseWeightStep = 2.5;
                     this.autoIncreaseStartWeight = 20;
@@ -135,7 +133,6 @@ public class Exercise {
                     break;
                 case "ENDURANCE":
                     this.rest = 90;
-                    this.autoIncrease = true;
                     this.autoIncreaseFactor = 1.15;
                     this.autoIncreaseWeightStep = 2.5;
                     this.autoIncreaseStartWeight = 10;
