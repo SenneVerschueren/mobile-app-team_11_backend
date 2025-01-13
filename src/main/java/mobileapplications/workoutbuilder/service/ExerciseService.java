@@ -109,6 +109,10 @@ public class ExerciseService {
     public Exercise updateExercise(Long id, Exercise newValuesExercise) {
         Exercise exercise = getExerciseById(id);
 
+        if(exercise.getType() != newValuesExercise.getType()) {
+            exercise.clearProgress();
+        }
+        
         // Update exercise values
         exercise.setName(newValuesExercise.getName());
         exercise.setType(newValuesExercise.getType());

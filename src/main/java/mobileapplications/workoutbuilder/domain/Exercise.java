@@ -187,7 +187,10 @@ public class Exercise {
 
     public void removeProgress(Progress progress) {
         progressList.remove(progress);
+    }
 
+    public void clearProgress() {
+        progressList.clear();
     }
 
     // // Getters and Setters
