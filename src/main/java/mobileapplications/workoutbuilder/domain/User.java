@@ -42,6 +42,11 @@ public class User {
     @JsonManagedReference
     private List<Workout> workouts;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Bodyweight> bodyweight;
+
+
     private Integer streakGoal = 0;
 
     private Integer streakProgress = 0;
@@ -132,5 +137,13 @@ public class User {
 
     public void setStreak(Integer streak) {
         this.streak = streak;
+    }
+
+    public List<Bodyweight> getBodyweight() {
+        return bodyweight;
+    }
+
+    public void setBodyweight(List<Bodyweight> bodyweight) {
+        this.bodyweight = bodyweight;
     }
 }
