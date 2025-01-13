@@ -192,8 +192,13 @@ public class ExerciseService {
                     if (exercise.getType().equals(WorkoutType.WEIGHTS)) {
                         if (currentSets >= maxSets) {
                             currentSets = minSets;
-                            currentWeight = addWeight(currentWeight, factor, weightStep);
+                            if (exercise.getProgressList()
+                                    .get(exercise.getProgressList().size() - 1).getWeight() != currentWeight) {
+                                addProgressWeight(id, currentWeight, new Date());
+                            }
                             addProgressWeight(id, currentWeight, new Date());
+                            currentWeight = addWeight(currentWeight, factor, weightStep);
+
                         }
                     }
                     if (exercise.getType().equals(WorkoutType.BODYWEIGHT)) {
@@ -258,8 +263,12 @@ public class ExerciseService {
                     if (exercise.getType().equals(WorkoutType.WEIGHTS)) {
                         if (currentSets <= minSets) {
                             currentSets = maxSets;
+                            if (exercise.getProgressList()
+                                    .get(exercise.getProgressList().size() - 1).getWeight() != currentWeight) {
+                                addProgressWeight(id, currentWeight, new Date());
+                            }
                             currentWeight = subtractWeight(currentWeight, factor, weightStep);
-                            addProgressWeight(id, currentWeight, new Date());
+
                         }
                     }
                     if (exercise.getType().equals(WorkoutType.BODYWEIGHT)) {
