@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -64,32 +67,10 @@ public class WorkoutController {
 
 }
 
+@Getter
+@Setter
 class WorkoutUpdateRequest {
     private String name;
     private Integer rest;
     private List<Long> exerciseIds;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getRest() {
-        return rest;
-    }
-
-    public void setRest(Integer rest) {
-        this.rest = rest;
-    }
-
-    public List<Long> getExerciseIds() {
-        return exerciseIds;
-    }
-
-    public void setExerciseIds(List<Long> exerciseIds) {
-        this.exerciseIds = exerciseIds;
-    }
 }

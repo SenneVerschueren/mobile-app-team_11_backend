@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -39,29 +42,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @Getter
+    @Setter
     public static class ErrorResponse {
         private int status;
         private String message;
 
         public ErrorResponse(int status, String message) {
             this.status = status;
-            this.message = message;
-        }
-
-        // Getters and setters
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
             this.message = message;
         }
     }

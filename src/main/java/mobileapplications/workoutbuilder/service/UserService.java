@@ -20,7 +20,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // Create a new user
     public User createUser(String name, String email, String password) {
         User existingUser = userRepository.findByEmail(email);
 
@@ -32,31 +31,26 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    // Find user by ID
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    // Find user by email (if needed for login or unique checks)
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    // Get all users
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Delete user by ID
     public boolean deleteUser(Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
             return true;
         }
-        return false; // User not found
+        return false;
     }
 
-    // Get all workouts for a user
     public List<Workout> getAllWorkoutsForUser(Long userId) {
         User user = getUserById(userId);
         if (user == null) {
@@ -66,7 +60,6 @@ public class UserService {
         return user.getWorkouts();
     }
 
-    // Update user by ID
     public User updateUser(String email, User newValuesUser) {
         User user = getUserByEmail(email);
 

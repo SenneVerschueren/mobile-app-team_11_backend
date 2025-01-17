@@ -11,8 +11,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
-    // You can add custom queries if needed
 
     @Query("SELECT e FROM Exercise e JOIN e.workout w WHERE w.user.id = :userId")
+    
     List<Exercise> findByUserId(@Param("userId") Long userId);
+
 }

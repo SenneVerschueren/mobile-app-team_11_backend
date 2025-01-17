@@ -34,7 +34,6 @@ public class SetController {
         return setService.addSetToExercise(exerciseId, set);
     }
 
-    // Update a set
     @PutMapping("/{id}")
     public Set updateSet(@PathVariable Long id, @RequestBody Set set) {
         return setService.updateSet(id, set);

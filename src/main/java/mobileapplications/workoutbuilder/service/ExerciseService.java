@@ -8,7 +8,6 @@ import mobileapplications.workoutbuilder.enums.WorkoutType;
 import mobileapplications.workoutbuilder.exception.ExerciseServiceException;
 import mobileapplications.workoutbuilder.repository.ExerciseRepository;
 import mobileapplications.workoutbuilder.repository.ProgressRepository;
-import mobileapplications.workoutbuilder.repository.SetRepository;
 
 import mobileapplications.workoutbuilder.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +32,11 @@ public class ExerciseService {
     @Autowired
     private WorkoutRepository workoutRepository;
 
-    @Autowired
-    private SetRepository setRepositroy;
-
-    @Autowired
-    private ProgressRepository progressRepository;
-
     public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService,
             WorkoutRepository workoutRepository, ProgressRepository progressRepository) {
         this.exerciseRepository = exerciseRepository;
         this.workoutService = workoutService;
         this.workoutRepository = workoutRepository;
-        this.progressRepository = progressRepository;
     }
 
     public List<Exercise> getAllExercises() {
@@ -72,7 +64,6 @@ public class ExerciseService {
             exercise.setWorkout(workout);
             return exerciseRepository.save(exercise);
         } else {
-            // handle the case where the workout is not found
             throw new ExerciseServiceException("Workout not found with id: " + workoutId);
         }
 
@@ -83,14 +74,6 @@ public class ExerciseService {
         exercise.setName(exerciseName);
         return exerciseRepository.save(exercise);
     }
-
-    /*
-     * public String deleteExercise(Long id) {
-     * String exerciseName = getExerciseById(id).getName();
-     * exerciseRepository.deleteById(id);
-     * return exerciseName + " is successfully deleted!";
-     * }
-     */
 
     public String deleteExerciseFromWorkout(Long workoutId, Long exerciseId) {
         Workout workout = workoutService.getWorkoutById(workoutId)
@@ -113,7 +96,6 @@ public class ExerciseService {
             exercise.clearProgress();
         }
         
-        // Update exercise values
         exercise.setName(newValuesExercise.getName());
         exercise.setType(newValuesExercise.getType());
         exercise.setRest(newValuesExercise.getRest());
@@ -132,7 +114,6 @@ public class ExerciseService {
         exercise.setAutoIncreaseCurrentWeight(newValuesExercise.getAutoIncreaseCurrentWeight());
         exercise.setAutoIncreaseCurrentDuration(newValuesExercise.getAutoIncreaseCurrentDuration());
 
-        // Update sets
         List<Set> existingSets = exercise.getSets();
         List<Set> newSets = newValuesExercise.getSets();
 
@@ -161,7 +142,6 @@ public class ExerciseService {
             }
         }
 
-        // Remove sets that are not in the new list
         existingSets.removeIf(
                 existingSet -> newSets.stream().noneMatch(newSet -> newSet.getId().equals(existingSet.getId())));
 

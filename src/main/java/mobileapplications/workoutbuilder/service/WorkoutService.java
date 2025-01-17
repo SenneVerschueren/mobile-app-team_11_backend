@@ -6,7 +6,6 @@ import mobileapplications.workoutbuilder.domain.Workout;
 import mobileapplications.workoutbuilder.exception.WorkoutServiceException;
 import mobileapplications.workoutbuilder.repository.ExerciseRepository;
 import mobileapplications.workoutbuilder.repository.WorkoutRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ public class WorkoutService {
         this.userService = userService;
     }
 
-    // Create or update a workout
     public Workout createWorkout(String workoutName, Long userId) {
         try {
             User user = userService.getUserById(userId);
@@ -41,17 +39,14 @@ public class WorkoutService {
         }
     }
 
-    // Get all workouts
     public List<Workout> getAllWorkouts() {
         return workoutRepository.findAll();
     }
 
-    // Get a workout by id
     public Optional<Workout> getWorkoutById(Long id) {
         return workoutRepository.findById(id);
     }
 
-    // Delete a workout by id
     public void deleteWorkout(Long id) {
         workoutRepository.deleteById(id);
     }
@@ -63,11 +58,9 @@ public class WorkoutService {
         }
         Workout workout = optionalWorkout.get();
 
-        // Update workout details
         workout.setName(workoutName);
         workout.setRest(rest);
 
-        // Rearrange exercises according to the provided list of exercise IDs
         List<Exercise> exercises = new ArrayList<>();
         for (Long exerciseId : exerciseIds) {
             Optional<Exercise> optionalExercise = exerciseRepository.findById(exerciseId);

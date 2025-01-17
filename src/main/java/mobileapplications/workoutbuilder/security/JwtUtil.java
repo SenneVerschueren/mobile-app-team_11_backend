@@ -12,8 +12,8 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "YourSuperSecretKeyForJwtEncryptionReplaceMe12345";
-    private static final int TOKEN_VALIDITY = 3600 * 1000; // 1 hour in milliseconds
+    private static final String SECRET_KEY = "HeelGeheimeKeyDieEigenlijkInEenEnvZouMoetenStaan";
+    private static final int TOKEN_VALIDITY = 3600 * 1000;
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
     public String generateToken(User user) {

@@ -24,7 +24,9 @@ public class Progress {
     private Exercise exercise;
 
     private Double weight;
+
     private Integer duration;
+    
     private Date date;
 
     public Progress() {

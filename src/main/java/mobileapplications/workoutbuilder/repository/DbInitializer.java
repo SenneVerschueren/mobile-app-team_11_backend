@@ -16,7 +16,6 @@ public class DbInitializer {
     private final PasswordEncoder passwordEncoder;
     private final WorkoutRepository workoutRepository;
     private final ExerciseRepository exerciseRepository;
-    private final ProgressRepository progressRepository;
 
     public DbInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder,
             WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository,
@@ -25,7 +24,6 @@ public class DbInitializer {
         this.passwordEncoder = passwordEncoder;
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
-        this.progressRepository = progressRepository;
     }
 
     @PostConstruct

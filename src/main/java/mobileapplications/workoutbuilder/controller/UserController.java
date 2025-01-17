@@ -5,14 +5,12 @@ import mobileapplications.workoutbuilder.domain.Workout;
 import mobileapplications.workoutbuilder.exception.UserServiceException;
 import mobileapplications.workoutbuilder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 
 @RestController
@@ -26,20 +24,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Get all users
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    // Get user by ID
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         return user;
     }
 
-    // Get all workouts for a user
     @GetMapping("/{id}/workouts")
     public List<Workout> getUserWorkouts(@PathVariable Long id) {
         try {
@@ -50,7 +45,6 @@ public class UserController {
         }
     }
 
-    // Update a user
     @PutMapping("/{email}")
     public User updateUser(@PathVariable String email, @RequestBody User user) {
         return userService.updateUser(email, user);

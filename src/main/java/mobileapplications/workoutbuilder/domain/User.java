@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,7 +17,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
@@ -37,7 +38,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    // One user can have multiple workouts
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Workout> workouts;
@@ -52,7 +52,6 @@ public class User {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    // Constructors
     public User() {
     }
 
@@ -63,46 +62,6 @@ public class User {
         this.workouts = Collections.emptyList();
     }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Workout> getWorkouts() {
-        return workouts;
-    }
-
-    public void setWorkouts(List<Workout> workouts) {
-        this.workouts = workouts;
-    }
 
     public void updateValuesUser(String name, String email, String password) {
         this.name = name;
@@ -110,27 +69,4 @@ public class User {
         this.password = password;
     }
 
-    public Integer getStreakGoal() {
-        return streakGoal;
-    }
-
-    public void setStreakGoal(Integer streakGoal) {
-        this.streakGoal = streakGoal;
-    }
-
-    public Integer getStreakProgress() {
-        return streakProgress;
-    }
-
-    public void setStreakProgress(Integer streakProgress) {
-        this.streakProgress = streakProgress;
-    }
-
-    public Integer getStreak() {
-        return streak;
-    }
-
-    public void setStreak(Integer streak) {
-        this.streak = streak;
-    }
 }

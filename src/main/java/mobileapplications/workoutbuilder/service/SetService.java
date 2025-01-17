@@ -2,7 +2,6 @@ package mobileapplications.workoutbuilder.service;
 
 import mobileapplications.workoutbuilder.domain.Exercise;
 import mobileapplications.workoutbuilder.domain.Set;
-import mobileapplications.workoutbuilder.repository.ExerciseRepository;
 import mobileapplications.workoutbuilder.repository.SetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +16,6 @@ public class SetService {
 
     @Autowired
     private ExerciseService exerciseService;
-
-    @Autowired
-    private ExerciseRepository exerciseRepository;
 
     public List<Set> getAllSets() {
         return setRepository.findAll();
