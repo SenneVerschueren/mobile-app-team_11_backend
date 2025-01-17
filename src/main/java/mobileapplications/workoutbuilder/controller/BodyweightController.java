@@ -3,13 +3,11 @@ package mobileapplications.workoutbuilder.controller;
 import mobileapplications.workoutbuilder.domain.Bodyweight;
 import mobileapplications.workoutbuilder.service.BodyweightService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/bodyweight")
 public class BodyweightController {
 
@@ -28,5 +26,10 @@ public class BodyweightController {
     @GetMapping("/{id}")
     public List<Bodyweight> getBodyweightByUserId(@PathVariable Long id) {
         return bodyweightService.getBodyweightByUserId(id);
+    }
+
+    @PostMapping("/add/{userId}")
+    public Bodyweight addBodyweight(@PathVariable Long userId, @RequestBody Bodyweight bodyweight) {
+        return bodyweightService.addBodyweight(userId, bodyweight);
     }
 }

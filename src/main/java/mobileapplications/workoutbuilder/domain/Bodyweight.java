@@ -1,10 +1,12 @@
 package mobileapplications.workoutbuilder.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -19,7 +21,8 @@ public class Bodyweight {
 
     private Double bodyWeight;
 
-    private Date date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -28,8 +31,12 @@ public class Bodyweight {
 
     public Bodyweight() {}
 
-    public Bodyweight(Double bodyWeight, Date date) {
+    public Bodyweight(Double bodyWeight) {
         this.bodyWeight = bodyWeight;
-        this.date = date;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.date = LocalDate.now();
     }
 }
