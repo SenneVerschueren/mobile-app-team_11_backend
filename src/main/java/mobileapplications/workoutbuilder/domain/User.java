@@ -42,6 +42,11 @@ public class User {
     @JsonManagedReference
     private List<Workout> workouts;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Bodyweight> bodyweight;
+
+
     private Integer streakGoal = 0;
 
     private Integer streakProgress = 0;
@@ -68,5 +73,5 @@ public class User {
         this.email = email;
         this.password = password;
     }
-
+    
 }
